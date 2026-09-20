@@ -1,0 +1,325 @@
+[INFO] [launch]: All log files can be found below <ROS_LOG_DIR>
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [gazebo-1]: process started with pid [825]
+[INFO] [robot_state_publisher-2]: process started with pid [826]
+[INFO] [parameter_bridge-3]: process started with pid [828]
+[robot_state_publisher-2] [INFO] [1784047761.636592307] [robot_state_publisher]: Robot initialized
+[parameter_bridge-3] [INFO] [1784047761.669577012] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1784047761.672254915] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/sorting_cell/camera/image_raw (gz.msgs.Image) -> /sorting_cell/camera/image_raw (sensor_msgs/msg/Image)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1784047761.674206186] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/sorting_cell/camera/camera_info (gz.msgs.CameraInfo) -> /sorting_cell/camera/camera_info (sensor_msgs/msg/CameraInfo)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1784047761.674918829] [ros_gz_bridge]: Creating ROS->GZ service bridge [/world/sorting_cell/set_pose (ros_gz_interfaces/srv/SetEntityPose -> /)]
+[gazebo-1] [Msg] Gazebo Sim Server v8.11.0
+[gazebo-1] [Msg] Loading SDF world file[<WSL_PROJECT_ROOT>/install/sorting_cell_gazebo/share/sorting_cell_gazebo/worlds/sorting_cell.sdf].
+[gazebo-1] [Msg] Serving entity system service on [/entity/system/add]
+[gazebo-1] [Msg] Create service on [/world/sorting_cell/create_multiple] (async)
+[gazebo-1] [Msg] Create service on [/world/sorting_cell/create_multiple/blocking] (blocking)
+[gazebo-1] [Msg] Remove service on [/world/sorting_cell/remove] (async)
+[gazebo-1] [Msg] Remove service on [/world/sorting_cell/remove/blocking] (blocking)
+[gazebo-1] [Msg] Pose service on [/world/sorting_cell/set_pose] (async)
+[gazebo-1] [Msg] Pose service on [/world/sorting_cell/set_pose/blocking] (blocking)
+[gazebo-1] [Msg] Pose service on [/world/sorting_cell/set_pose_vector] (async)
+[gazebo-1] [Msg] Pose service on [/world/sorting_cell/set_pose_vector/blocking] (blocking)
+[gazebo-1] [Msg] Light configuration service on [/world/sorting_cell/light_config] (async)
+[gazebo-1] [Msg] Light configuration service on [/world/sorting_cell/light_config/blocking] (blocking)
+[gazebo-1] [Msg] Physics service on [/world/sorting_cell/set_physics] (async)
+[gazebo-1] [Msg] Physics service on [/world/sorting_cell/set_physics/blocking] (blocking)
+[gazebo-1] [Msg] SphericalCoordinates service on [/world/sorting_cell/set_spherical_coordinates] (async)
+[gazebo-1] [Msg] SphericalCoordinates service on [/world/sorting_cell/set_spherical_coordinates/blocking] (blocking)
+[gazebo-1] [Msg] Enable collision service on [/world/sorting_cell/enable_collision] (async)
+[gazebo-1] [Msg] Enable collision service on [/world/sorting_cell/enable_collision/blocking] (blocking)
+[gazebo-1] [Msg] Disable collision service on [/world/sorting_cell/disable_collision] (async)
+[gazebo-1] [Msg] Disable collision service on [/world/sorting_cell/disable_collision/blocking] (blocking)
+[gazebo-1] [Msg] Material service on [/world/sorting_cell/visual_config] (async)
+[gazebo-1] [Msg] Material service on [/world/sorting_cell/visual_config/blocking] (blocking)
+[gazebo-1] [Msg] Material service on [/world/sorting_cell/wheel_slip] (async)
+[gazebo-1] [Msg] Material service on [/world/sorting_cell/wheel_slip/blocking] (blocking)
+[gazebo-1] [Msg] Loaded level [default]
+[gazebo-1] [Msg] Serving world controls on [/world/sorting_cell/control], [/world/sorting_cell/control/state] and [/world/sorting_cell/playback/control]
+[gazebo-1] [Msg] Serving GUI information on [/world/sorting_cell/gui/info]
+[gazebo-1] [Wrn] [Ogre2Camera.cc:423] Ogre2Camera::SetVisibilityMask: Mask bits c0000000 are set but will be ignored as they conflict with the reserved bits used internally by the ogre2 backend.
+[INFO] [create-4]: process started with pid [949]
+[create-4] [INFO] [1784047764.620764912] [ros_gz_sim]: Waiting messages on topic [robot_description].
+[create-4] [INFO] [1784047765.663245817] [ros_gz_sim]: Entity creation successful.
+[INFO] [create-4]: process has finished cleanly [pid 949]
+[INFO] [spawner-5]: process started with pid [983]
+[gazebo-1] [INFO] [1784047765.876866253] [gz_ros_control]: [gz_ros2_control] Fixed joint ['world_to_base'] (Entity='96') is skipped.
+[gazebo-1] [INFO] [1784047765.879328372] [gz_ros_control]: Loading controller_manager
+[gazebo-1] [INFO] [1784047765.897277691] [controller_manager]: Using ROS clock for triggering controller manager cycles.
+[gazebo-1] [INFO] [1784047765.907319865] [controller_manager]: Subscribing to '/robot_description' topic for robot description.
+[gazebo-1] [WARN] [1784047765.914030321] [gz_ros_control]: Waiting RM to load and initialize hardware...
+[gazebo-1] [INFO] [1784047766.049669869] [controller_manager]: Received robot description from topic.
+[gazebo-1] [INFO] [1784047766.049738178] [controller_manager]: Enforcing command limits is disabled. Command limits from URDF will be ignored.
+[gazebo-1] [INFO] [1784047766.057823612] [gz_ros_control]: The position_proportional_gain has been set to: 0.8
+[gazebo-1] [INFO] [1784047766.058100903] [gz_ros_control]: Loading joint: base_yaw_joint
+[gazebo-1] [INFO] [1784047766.058139485] [gz_ros_control]: 	State:
+[gazebo-1] [INFO] [1784047766.058148117] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058172958] [gz_ros_control]: 			 found initial value: 0.000000
+[gazebo-1] [INFO] [1784047766.058195008] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1784047766.058206706] [gz_ros_control]: 	Command:
+[gazebo-1] [INFO] [1784047766.058210476] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058267067] [gz_ros_control]: Loading joint: shoulder_joint
+[gazebo-1] [INFO] [1784047766.058279137] [gz_ros_control]: 	State:
+[gazebo-1] [INFO] [1784047766.058282583] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058287238] [gz_ros_control]: 			 found initial value: 0.800000
+[gazebo-1] [INFO] [1784047766.058291634] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1784047766.058294858] [gz_ros_control]: 	Command:
+[gazebo-1] [INFO] [1784047766.058297812] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058518212] [gz_ros_control]: Loading joint: elbow_joint
+[gazebo-1] [INFO] [1784047766.058569027] [gz_ros_control]: 	State:
+[gazebo-1] [INFO] [1784047766.058576197] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058583203] [gz_ros_control]: 			 found initial value: -1.500000
+[gazebo-1] [INFO] [1784047766.058588159] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1784047766.058591367] [gz_ros_control]: 	Command:
+[gazebo-1] [INFO] [1784047766.058594156] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058622278] [gz_ros_control]: Loading joint: wrist_pitch_joint
+[gazebo-1] [INFO] [1784047766.058627549] [gz_ros_control]: 	State:
+[gazebo-1] [INFO] [1784047766.058630921] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058634273] [gz_ros_control]: 			 found initial value: 0.700000
+[gazebo-1] [INFO] [1784047766.058637937] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1784047766.058640730] [gz_ros_control]: 	Command:
+[gazebo-1] [INFO] [1784047766.058643317] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058663488] [gz_ros_control]: Loading joint: wrist_roll_joint
+[gazebo-1] [INFO] [1784047766.058666939] [gz_ros_control]: 	State:
+[gazebo-1] [INFO] [1784047766.058669924] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058674381] [gz_ros_control]: 			 found initial value: 0.000000
+[gazebo-1] [INFO] [1784047766.058677860] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1784047766.058681237] [gz_ros_control]: 	Command:
+[gazebo-1] [INFO] [1784047766.058703471] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058731069] [gz_ros_control]: Loading joint: left_finger_joint
+[gazebo-1] [INFO] [1784047766.058748365] [gz_ros_control]: 	State:
+[gazebo-1] [INFO] [1784047766.058752156] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058755470] [gz_ros_control]: 			 found initial value: 0.032000
+[gazebo-1] [INFO] [1784047766.058759852] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1784047766.058763436] [gz_ros_control]: 	Command:
+[gazebo-1] [INFO] [1784047766.058766143] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058788637] [gz_ros_control]: Loading joint: right_finger_joint
+[gazebo-1] [INFO] [1784047766.058799051] [gz_ros_control]: Joint 'right_finger_joint'is mimicking joint 'left_finger_joint' with multiplier: 1 and offset: 0
+[gazebo-1] [INFO] [1784047766.058803483] [gz_ros_control]: 	State:
+[gazebo-1] [INFO] [1784047766.058806499] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1784047766.058809704] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1784047766.058812537] [gz_ros_control]: 	Command:
+[gazebo-1] [INFO] [1784047766.059081166] [controller_manager]: Initialize hardware 'GazeboSimSystem'
+[gazebo-1] [WARN] [1784047766.059191849] [controller_manager.hardware_component.system.GazeboSimSystem]: Executor is not available during hardware component initialization for 'GazeboSimSystem'. Skipping node creation!
+[gazebo-1] [INFO] [1784047766.059322690] [controller_manager]: Successful initialization of hardware 'GazeboSimSystem'
+[gazebo-1] [INFO] [1784047766.059560508] [controller_manager]: Activating component 'GazeboSimSystem'.
+[gazebo-1] [INFO] [1784047766.059593321] [resource_manager]: 'configure' hardware 'GazeboSimSystem'
+[gazebo-1] [INFO] [1784047766.059602820] [gz_ros_control]: System Successfully configured!
+[gazebo-1] [INFO] [1784047766.059615623] [resource_manager]: Successful 'configure' of hardware 'GazeboSimSystem'
+[gazebo-1] [INFO] [1784047766.059630901] [resource_manager]: 'activate' hardware 'GazeboSimSystem'
+[gazebo-1] [INFO] [1784047766.059661568] [resource_manager]: Successful 'activate' of hardware 'GazeboSimSystem'
+[gazebo-1] [WARN] [1784047766.059803945] [controller_manager]: Component 'GazeboSimSystem' does not have read or write statistics initialized, skipping registration.
+[gazebo-1] [INFO] [1784047766.059818449] [controller_manager]: Resource Manager has been successfully initialized. Starting Controller Manager services...
+[spawner-5] [INFO] [1784047766.237959553] [spawner_joint_state_broadcaster]: waiting for service /controller_manager/list_controllers to become available...
+[gazebo-1] [INFO] [1784047766.490325126] [controller_manager]: Loading controller : 'joint_state_broadcaster' of type 'joint_state_broadcaster/JointStateBroadcaster'
+[gazebo-1] [INFO] [1784047766.490387320] [controller_manager]: Loading controller 'joint_state_broadcaster'
+[gazebo-1] [INFO] [1784047766.500185368] [controller_manager]: Controller 'joint_state_broadcaster' node arguments: --ros-args --params-file <WSL_PROJECT_ROOT>/install/sorting_cell_gazebo/share/sorting_cell_gazebo/config/controllers.yaml -p use_sim_time:=true --param use_sim_time:=true
+[spawner-5] [INFO] [1784047766.519999235] [spawner_joint_state_broadcaster]: Loaded joint_state_broadcaster
+[gazebo-1] [INFO] [1784047766.521512931] [controller_manager]: Configuring controller: 'joint_state_broadcaster'
+[gazebo-1] [INFO] [1784047766.521779490] [joint_state_broadcaster]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[gazebo-1] [INFO] [1784047766.537669629] [controller_manager]: Activating controllers: [ joint_state_broadcaster ]
+[gazebo-1] [Err] [Physics.cc:1808] Attempting to create a mimic constraint for joint [right_finger_joint] but the chosen physics engine does not support mimic constraints, so no constraint will be created.
+[gazebo-1] [INFO] [1784047767.934185264] [controller_manager]: Successfully switched controllers!
+[spawner-5] [INFO] [1784047767.938890579] [spawner_joint_state_broadcaster]: Configured and activated joint_state_broadcaster
+[INFO] [spawner-5]: process has finished cleanly [pid 983]
+[INFO] [spawner-6]: process started with pid [1045]
+[spawner-6] [INFO] [1784047768.524669164] [spawner_cell_controller]: waiting for service /controller_manager/list_controllers to become available...
+[gazebo-1] [INFO] [1784047769.778041069] [controller_manager]: Loading controller : 'cell_controller' of type 'joint_trajectory_controller/JointTrajectoryController'
+[gazebo-1] [INFO] [1784047769.778191123] [controller_manager]: Loading controller 'cell_controller'
+[gazebo-1] [INFO] [1784047769.788088761] [controller_manager]: Controller 'cell_controller' node arguments: --ros-args --params-file <WSL_PROJECT_ROOT>/install/sorting_cell_gazebo/share/sorting_cell_gazebo/config/controllers.yaml -p use_sim_time:=true --param use_sim_time:=true
+[spawner-6] [INFO] [1784047769.820656724] [spawner_cell_controller]: Loaded cell_controller
+[gazebo-1] [INFO] [1784047769.822229461] [controller_manager]: Configuring controller: 'cell_controller'
+[gazebo-1] [INFO] [1784047769.822462574] [cell_controller]: No specific joint names are used for command interfaces. Using 'joints' parameter.
+[gazebo-1] [INFO] [1784047769.822509006] [cell_controller]: Command interfaces are [position] and state interfaces are [position velocity].
+[gazebo-1] [INFO] [1784047769.822568385] [cell_controller]: Using 'splines' interpolation method.
+[gazebo-1] [INFO] [1784047769.825773710] [cell_controller]: Action status changes will be monitored at 20.00 Hz.
+[gazebo-1] [INFO] [1784047769.836464147] [cell_controller]: Setting initial scaling factor to 1.000000
+[gazebo-1] [INFO] [1784047769.836506205] [cell_controller]: No scaling interface set. This controller will not read speed scaling from the hardware.
+[gazebo-1] [INFO] [1784047769.841659122] [controller_manager]: Activating controllers: [ cell_controller ]
+[gazebo-1] [INFO] [1784047769.844057404] [controller_manager]: Successfully switched controllers!
+[spawner-6] [INFO] [1784047769.849028608] [spawner_cell_controller]: Configured and activated cell_controller
+[INFO] [spawner-6]: process has finished cleanly [pid 1045]
+[INFO] [gazebo_attachment-7]: process started with pid [1075]
+[INFO] [pick_coordinator-8]: process started with pid [1076]
+[INFO] [cell_metrics-9]: process started with pid [1077]
+[INFO] [color_perception-10]: process started with pid [1078]
+[cell_metrics-9] [INFO] [1784047770.617493384] [cell_metrics]: writing cycle metrics to <EVIDENCE_OUTPUT_DIR>/metrics.csv
+[gazebo-1] [Msg] World [sorting_cell] initialized with [fast_physics] physics profile.
+[gazebo-1] [Msg] Serving world SDF generation service on [/world/sorting_cell/generate_world_sdf]
+[gazebo-1] [Msg] Serving world names on [/gazebo/worlds]
+[gazebo-1] [Msg] Resource path add service on [/gazebo/resource_paths/add].
+[gazebo-1] [Msg] Resource path get service on [/gazebo/resource_paths/get].
+[gazebo-1] [Msg] Resource path resolve service on [/gazebo/resource_paths/resolve].
+[gazebo-1] [Msg] Resource paths published on [/gazebo/resource_paths].
+[gazebo-1] [Msg] Server control service on [/server_control].
+[gazebo-1] [Msg] Found no publishers on /stats, adding root stats topic
+[gazebo-1] [Msg] Found no publishers on /clock, adding root clock topic
+[gazebo-1] [Msg] Loading plugin [gz-rendering-ogre2]
+[gazebo-1] [Msg] Serving scene information on [/world/sorting_cell/scene/info]
+[gazebo-1] [Msg] Serving graph information on [/world/sorting_cell/scene/graph]
+[gazebo-1] [Msg] Serving full state on [/world/sorting_cell/state]
+[gazebo-1] [Msg] Serving full state (async) on [/world/sorting_cell/state_async]
+[gazebo-1] [Msg] Publishing scene information on [/world/sorting_cell/scene/info]
+[gazebo-1] [Msg] Publishing entity deletions on [/world/sorting_cell/scene/deletion]
+[gazebo-1] [Msg] Publishing state changes on [/world/sorting_cell/state]
+[gazebo-1] [Msg] Publishing pose messages on [/world/sorting_cell/pose/info]
+[gazebo-1] [Msg] Publishing dynamic pose messages on [/world/sorting_cell/dynamic_pose/info]
+[pick_coordinator-8] [INFO] [1784047771.299853260] [pick_coordinator]: coordinator ready; action server=/cell_controller/follow_joint_trajectory, trajectory sample period=0.040s
+[color_perception-10] [INFO] [1784047771.437213594] [color_perception]: RGB color perception ready; waiting for camera calibration
+[color_perception-10] [INFO] [1784047771.461487670] [color_perception]: camera calibrated: fx=552.5, fy=552.5, cx=320.0, cy=240.0
+[color_perception-10] [INFO] [1784047771.756038149] [color_perception]: stable blue workpiece at (0.471, -0.131, 0.075)
+[color_perception-10] [INFO] [1784047771.756885287] [color_perception]: stable orange workpiece at (0.428, 0.145, 0.075)
+[color_perception-10] [INFO] [1784047771.757608243] [color_perception]: published part_blue: class=accepted, confidence=0.95
+[pick_coordinator-8] [INFO] [1784047771.758056386] [pick_coordinator]: queued part_blue (accepted) in base_link
+[pick_coordinator-8] [INFO] [1784047771.764070279] [pick_coordinator]: planned part_blue: destination=accepted_bin, segments=9, points=308
+[gazebo-1] [INFO] [1784047771.765818666] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047771.765918784] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047772.689198581] [color_perception]: stable red workpiece at (0.500, 0.035, 0.075)
+[color_perception-10] [INFO] [1784047772.769084777] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[color_perception-10] [INFO] [1784047773.773918817] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[color_perception-10] [INFO] [1784047774.784328115] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[gazebo-1] [INFO] [1784047775.387407314] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047775.417767814] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047775.417854599] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047775.809056877] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[gazebo-1] [INFO] [1784047776.095306579] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047776.122135944] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047776.122188813] [cell_controller]: Accepted new action goal
+[gazebo-1] [INFO] [1784047776.559340418] [cell_controller]: Goal reached, success!
+[pick_coordinator-8] [INFO] [1784047776.573781323] [pick_coordinator]: attachment command: attach:part_blue
+[gazebo_attachment-7] [INFO] [1784047776.589830973] [gazebo_attachment]: attachment requested for part_blue
+[gazebo_attachment-7] [INFO] [1784047776.693487142] [gazebo_attachment]: attached part_blue
+[pick_coordinator-8] [INFO] [1784047776.693866013] [pick_coordinator]: attachment confirmed: attached:part_blue
+[gazebo-1] [INFO] [1784047776.694966603] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047776.695016762] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047776.940430988] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[gazebo-1] [INFO] [1784047777.307853758] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047777.347068939] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047777.347158302] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047777.957131043] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[color_perception-10] [INFO] [1784047778.975012057] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[gazebo-1] [INFO] [1784047779.372481370] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047779.398900526] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047779.398981130] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047779.981992124] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[gazebo-1] [INFO] [1784047780.045002062] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047780.050623017] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047780.050669978] [cell_controller]: Accepted new action goal
+[gazebo-1] [INFO] [1784047780.488848299] [cell_controller]: Goal reached, success!
+[pick_coordinator-8] [INFO] [1784047780.503093435] [pick_coordinator]: attachment command: detach:part_blue
+[gazebo_attachment-7] [INFO] [1784047780.503125714] [gazebo_attachment]: detached part_blue
+[pick_coordinator-8] [INFO] [1784047780.504601328] [pick_coordinator]: attachment confirmed: detached:part_blue
+[gazebo-1] [INFO] [1784047780.506676776] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047780.506724054] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047781.003994608] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[gazebo-1] [INFO] [1784047781.163039920] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047781.208286943] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047781.208343334] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047782.012144525] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[color_perception-10] [INFO] [1784047783.021292632] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[color_perception-10] [INFO] [1784047784.026272249] [color_perception]: republished part_blue: class=accepted, confidence=0.95
+[gazebo-1] [INFO] [1784047784.528046546] [cell_controller]: Goal reached, success!
+[pick_coordinator-8] [INFO] [1784047784.560496474] [pick_coordinator]: cycle finished: object=part_blue, state=COMPLETE, elapsed=12.80s
+[cell_metrics-9] [INFO] [1784047784.564289848] [cell_metrics]: metrics: complete=1, failed=0, last_cycle=12.80s
+[color_perception-10] [INFO] [1784047785.096634255] [color_perception]: published part_red: class=scratch, confidence=0.91
+[pick_coordinator-8] [INFO] [1784047785.097172453] [pick_coordinator]: queued part_red (scratch) in base_link
+[pick_coordinator-8] [INFO] [1784047785.147792223] [pick_coordinator]: planned part_red: destination=reject_bin, segments=9, points=299
+[gazebo-1] [INFO] [1784047785.149155860] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047785.149203887] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047786.111442562] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[color_perception-10] [INFO] [1784047787.151774689] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[color_perception-10] [INFO] [1784047788.210264209] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[gazebo-1] [INFO] [1784047788.857348853] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047788.901394150] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047788.901458668] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047789.221278660] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[gazebo-1] [INFO] [1784047789.596311605] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047789.603620998] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047789.603673103] [cell_controller]: Accepted new action goal
+[gazebo-1] [INFO] [1784047790.040372199] [cell_controller]: Goal reached, success!
+[pick_coordinator-8] [INFO] [1784047790.055257282] [pick_coordinator]: attachment command: attach:part_red
+[gazebo_attachment-7] [INFO] [1784047790.055893465] [gazebo_attachment]: attachment requested for part_red
+[gazebo_attachment-7] [INFO] [1784047790.087014486] [gazebo_attachment]: attached part_red
+[pick_coordinator-8] [INFO] [1784047790.087581709] [pick_coordinator]: attachment confirmed: attached:part_red
+[gazebo-1] [INFO] [1784047790.089935387] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047790.090069617] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047790.233480156] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[gazebo-1] [INFO] [1784047790.733785837] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047790.742228618] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047790.742286302] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047791.252438094] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[color_perception-10] [INFO] [1784047792.257393550] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[gazebo-1] [INFO] [1784047792.320465517] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047792.344518176] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047792.344576693] [cell_controller]: Accepted new action goal
+[gazebo-1] [INFO] [1784047792.989122345] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047792.996282557] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047792.996342954] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047793.261696273] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[gazebo-1] [INFO] [1784047793.432893043] [cell_controller]: Goal reached, success!
+[pick_coordinator-8] [INFO] [1784047793.447624418] [pick_coordinator]: attachment command: detach:part_red
+[gazebo_attachment-7] [INFO] [1784047793.447831478] [gazebo_attachment]: detached part_red
+[pick_coordinator-8] [INFO] [1784047793.448429314] [pick_coordinator]: attachment confirmed: detached:part_red
+[gazebo-1] [INFO] [1784047793.449605201] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047793.449639261] [cell_controller]: Accepted new action goal
+[gazebo-1] [INFO] [1784047794.089148277] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047794.102370081] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047794.102438802] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047794.269039278] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[color_perception-10] [INFO] [1784047795.293887721] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[color_perception-10] [INFO] [1784047796.324118727] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[color_perception-10] [INFO] [1784047797.318077135] [color_perception]: republished part_red: class=scratch, confidence=0.91
+[gazebo-1] [INFO] [1784047797.432015078] [cell_controller]: Goal reached, success!
+[pick_coordinator-8] [INFO] [1784047797.454250711] [pick_coordinator]: cycle finished: object=part_red, state=COMPLETE, elapsed=12.31s
+[cell_metrics-9] [INFO] [1784047797.458732187] [cell_metrics]: metrics: complete=2, failed=0, last_cycle=12.31s
+[color_perception-10] [INFO] [1784047797.969314217] [color_perception]: published part_orange: class=unknown, confidence=0.95
+[pick_coordinator-8] [INFO] [1784047797.969571189] [pick_coordinator]: queued part_orange (unknown) in base_link
+[pick_coordinator-8] [INFO] [1784047798.026750294] [pick_coordinator]: planned part_orange: destination=rework_bin, segments=9, points=316
+[gazebo-1] [INFO] [1784047798.028253498] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047798.029552236] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047798.975589201] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[color_perception-10] [INFO] [1784047800.038451253] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[color_perception-10] [INFO] [1784047801.057785330] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[gazebo-1] [INFO] [1784047801.514936374] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047801.531687182] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047801.531764579] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047802.068445703] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[gazebo-1] [INFO] [1784047802.215509149] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047802.236178962] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047802.236257492] [cell_controller]: Accepted new action goal
+[gazebo-1] [INFO] [1784047802.679697417] [cell_controller]: Goal reached, success!
+[pick_coordinator-8] [INFO] [1784047802.688139657] [pick_coordinator]: gripper contact inferred at 0.0320m (empty-close target 0.0040m)
+[pick_coordinator-8] [INFO] [1784047802.689209237] [pick_coordinator]: attachment command: attach:part_orange
+[gazebo_attachment-7] [INFO] [1784047802.689300881] [gazebo_attachment]: attachment requested for part_orange
+[gazebo_attachment-7] [INFO] [1784047802.726358423] [gazebo_attachment]: attached part_orange
+[pick_coordinator-8] [INFO] [1784047802.726740498] [pick_coordinator]: attachment confirmed: attached:part_orange
+[gazebo-1] [INFO] [1784047802.727815846] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047802.727861877] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047803.073234569] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[gazebo-1] [INFO] [1784047803.337639077] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047803.379408729] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047803.379528491] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047804.103891173] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[gazebo-1] [INFO] [1784047804.853471217] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047804.881534146] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047804.881631227] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047805.118159563] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[gazebo-1] [INFO] [1784047805.720173618] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047805.733810891] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047805.733894473] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047806.123787102] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[gazebo-1] [INFO] [1784047806.175914924] [cell_controller]: Goal reached, success!
+[pick_coordinator-8] [INFO] [1784047806.185882509] [pick_coordinator]: attachment command: detach:part_orange
+[gazebo_attachment-7] [INFO] [1784047806.186153089] [gazebo_attachment]: detached part_orange
+[pick_coordinator-8] [INFO] [1784047806.188086561] [pick_coordinator]: attachment confirmed: detached:part_orange
+[gazebo-1] [INFO] [1784047806.188991554] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047806.189038737] [cell_controller]: Accepted new action goal
+[gazebo-1] [INFO] [1784047807.050682144] [cell_controller]: Goal reached, success!
+[gazebo-1] [INFO] [1784047807.091624133] [cell_controller]: Received new action goal
+[gazebo-1] [INFO] [1784047807.091694800] [cell_controller]: Accepted new action goal
+[color_perception-10] [INFO] [1784047807.208944494] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[color_perception-10] [INFO] [1784047808.257022183] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[color_perception-10] [INFO] [1784047809.318496009] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[color_perception-10] [INFO] [1784047810.447898321] [color_perception]: republished part_orange: class=unknown, confidence=0.95
+[gazebo-1] [INFO] [1784047811.353218285] [cell_controller]: Goal reached, success!
+[pick_coordinator-8] [INFO] [1784047811.397729511] [pick_coordinator]: cycle finished: object=part_orange, state=COMPLETE, elapsed=13.38s
+[cell_metrics-9] [INFO] [1784047811.416085360] [cell_metrics]: metrics: complete=3, failed=0, last_cycle=13.38s

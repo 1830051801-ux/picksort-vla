@@ -74,6 +74,8 @@ include = [
   "results/smoke",
   "ros2_ws",
   "scripts",
+  "tools",
+  "integrations",
   "tests",
   "README.md",
   "LICENSE",
@@ -95,7 +97,7 @@ markers = [
 [tool.ruff]
 target-version = "py311"
 line-length = 100
-extend-exclude = ["results", "checkpoints", "datasets/generated"]
+extend-exclude = ["results", "checkpoints", "datasets/generated", "integrations"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]

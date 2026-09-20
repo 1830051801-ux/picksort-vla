@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<sdf version="1.10">
+  <world name="sorting_cell">
+    <physics name="fast_physics" type="ignored">
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <gravity>0 0 -9.81</gravity>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <scene>
+      <ambient>0.42 0.42 0.45 1</ambient>
+      <background>0.78 0.82 0.85 1</background>
+      <shadows>false</shadows>
+    </scene>
+
+    <light name="key_light" type="directional">
+      <pose>0 0 2.8 0 0 0</pose>
+      <diffuse>0.95 0.95 0.92 1</diffuse>
+      <specular>0.25 0.25 0.25 1</specular>
+      <direction>-0.35 0.20 -1.0</direction>
+      <cast_shadows>false</cast_shadows>
+    </light>
+
+    <model name="floor">
+      <static>true</static>
+      <link name="floor_link">
+        <collision name="collision"><geometry><box><size>4 4 0.04</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>4 4 0.04</size></box></geometry>
+          <material><ambient>0.22 0.24 0.26 1</ambient><diffuse>0.28 0.30 0.32 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="workbench">
+      <static>true</static>
+      <pose>0.34 0 0.02 0 0 0</pose>
+      <link name="bench_link">
+        <collision name="top_collision"><pose>0 0 0.02 0 0 0</pose><geometry><box><size>1.10 0.88 0.04</size></box></geometry></collision>
+        <visual name="top_visual">
+          <pose>0 0 0.02 0 0 0</pose>
+          <geometry><box><size>1.10 0.88 0.04</size></box></geometry>
+          <material><ambient>0.45 0.48 0.50 1</ambient><diffuse>0.56 0.59 0.61 1</diffuse></material>
+        </visual>
+        <visual name="inspection_belt">
+          <pose>0.18 0 0.045 0 0 0</pose>
+          <geometry><box><size>0.56 0.30 0.012</size></box></geometry>
+          <material><ambient>0.07 0.08 0.09 1</ambient><diffuse>0.10 0.11 0.12 1</diffuse></material>
+        </visual>
+        <visual name="left_rail"><pose>0.18 0.165 0.07 0 0 0</pose><geometry><box><size>0.60 0.018 0.055</size></box></geometry></visual>
+        <visual name="right_rail"><pose>0.18 -0.165 0.07 0 0 0</pose><geometry><box><size>0.60 0.018 0.055</size></box></geometry></visual>
+      </link>
+    </model>
+
+    <model name="accepted_bin">
+      <static>true</static>
+      <pose>0.30 0.30 0.06 0 0 0</pose>
+      <link name="link">
+        <collision name="base_collision"><pose>0 0 0.004 0 0 0</pose><geometry><box><size>0.18 0.17 0.008</size></box></geometry></collision>
+        <collision name="front_collision"><pose>0 0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry></collision>
+        <collision name="back_collision"><pose>0 -0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry></collision>
+        <collision name="left_collision"><pose>0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry></collision>
+        <collision name="right_collision"><pose>-0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry></collision>
+        <visual name="base_visual"><pose>0 0 0.004 0 0 0</pose><geometry><box><size>0.18 0.17 0.008</size></box></geometry><material><ambient>0.10 0.55 0.30 1</ambient><diffuse>0.12 0.68 0.36 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="front_visual"><pose>0 0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry><material><ambient>0.10 0.55 0.30 1</ambient><diffuse>0.12 0.68 0.36 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="back_visual"><pose>0 -0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry><material><ambient>0.10 0.55 0.30 1</ambient><diffuse>0.12 0.68 0.36 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="left_visual"><pose>0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry><material><ambient>0.10 0.55 0.30 1</ambient><diffuse>0.12 0.68 0.36 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="right_visual"><pose>-0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry><material><ambient>0.10 0.55 0.30 1</ambient><diffuse>0.12 0.68 0.36 1</diffuse></material><transparency>0.18</transparency></visual>
+      </link>
+    </model>
+    <model name="reject_bin">
+      <static>true</static>
+      <pose>0.30 -0.30 0.06 0 0 0</pose>
+      <link name="link">
+        <collision name="base_collision"><pose>0 0 0.004 0 0 0</pose><geometry><box><size>0.18 0.17 0.008</size></box></geometry></collision>
+        <collision name="front_collision"><pose>0 0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry></collision>
+        <collision name="back_collision"><pose>0 -0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry></collision>
+        <collision name="left_collision"><pose>0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry></collision>
+        <collision name="right_collision"><pose>-0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry></collision>
+        <visual name="base_visual"><pose>0 0 0.004 0 0 0</pose><geometry><box><size>0.18 0.17 0.008</size></box></geometry><material><ambient>0.65 0.08 0.10 1</ambient><diffuse>0.78 0.10 0.12 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="front_visual"><pose>0 0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry><material><ambient>0.65 0.08 0.10 1</ambient><diffuse>0.78 0.10 0.12 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="back_visual"><pose>0 -0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry><material><ambient>0.65 0.08 0.10 1</ambient><diffuse>0.78 0.10 0.12 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="left_visual"><pose>0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry><material><ambient>0.65 0.08 0.10 1</ambient><diffuse>0.78 0.10 0.12 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="right_visual"><pose>-0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry><material><ambient>0.65 0.08 0.10 1</ambient><diffuse>0.78 0.10 0.12 1</diffuse></material><transparency>0.18</transparency></visual>
+      </link>
+    </model>
+    <model name="rework_bin">
+      <static>true</static>
+      <pose>0.48 0.25 0.06 0 0 0</pose>
+      <link name="link">
+        <collision name="base_collision"><pose>0 0 0.004 0 0 0</pose><geometry><box><size>0.18 0.17 0.008</size></box></geometry></collision>
+        <collision name="front_collision"><pose>0 0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry></collision>
+        <collision name="back_collision"><pose>0 -0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry></collision>
+        <collision name="left_collision"><pose>0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry></collision>
+        <collision name="right_collision"><pose>-0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry></collision>
+        <visual name="base_visual"><pose>0 0 0.004 0 0 0</pose><geometry><box><size>0.18 0.17 0.008</size></box></geometry><material><ambient>0.86 0.48 0.06 1</ambient><diffuse>0.96 0.58 0.08 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="front_visual"><pose>0 0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry><material><ambient>0.86 0.48 0.06 1</ambient><diffuse>0.96 0.58 0.08 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="back_visual"><pose>0 -0.079 0.0265 0 0 0</pose><geometry><box><size>0.18 0.012 0.045</size></box></geometry><material><ambient>0.86 0.48 0.06 1</ambient><diffuse>0.96 0.58 0.08 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="left_visual"><pose>0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry><material><ambient>0.86 0.48 0.06 1</ambient><diffuse>0.96 0.58 0.08 1</diffuse></material><transparency>0.18</transparency></visual>
+        <visual name="right_visual"><pose>-0.084 0 0.0265 0 0 0</pose><geometry><box><size>0.012 0.146 0.045</size></box></geometry><material><ambient>0.86 0.48 0.06 1</ambient><diffuse>0.96 0.58 0.08 1</diffuse></material><transparency>0.18</transparency></visual>
+      </link>
+    </model>
+
+    <model name="part_blue">
+      <pose>0.47 -0.13 0.075 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>0.08</mass><inertia><ixx>0.00002</ixx><iyy>0.00002</iyy><izz>0.00002</izz></inertia></inertial>
+        <collision name="collision"><geometry><box><size>0.055 0.045 0.035</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.055 0.045 0.035</size></box></geometry><material><ambient>0.05 0.34 0.66 1</ambient><diffuse>0.08 0.47 0.86 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="part_red">
+      <!-- The previous cylinder started 2.5 mm inside the bench and could roll
+           outward while contact was resolved.  Start just above the surface
+           and farther inward to retain vertical-pick IK margin. -->
+      <pose>0.50 0.02 0.078 0 0 0</pose>
+      <link name="link">
+        <inertial><mass>0.08</mass><inertia><ixx>0.00002</ixx><iyy>0.00002</iyy><izz>0.00002</izz></inertia></inertial>
+        <collision name="collision"><geometry><cylinder><radius>0.027</radius><length>0.035</length></cylinder></geometry></collision>
+        <visual name="visual"><geometry><cylinder><radius>0.027</radius><length>0.035</length></cylinder></geometry><material><ambient>0.70 0.06 0.08 1</ambient><diffuse>0.86 0.10 0.12 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="part_orange">
+      <pose>0.43 0.15 0.075 0 0 0.30</pose>
+      <link name="link">
+        <inertial><mass>0.08</mass><inertia><ixx>0.00002</ixx><iyy>0.00002</iyy><izz>0.00002</izz></inertia></inertial>
+        <collision name="collision"><geometry><box><size>0.065 0.035 0.035</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.065 0.035 0.035</size></box></geometry><material><ambient>0.86 0.36 0.04 1</ambient><diffuse>0.96 0.48 0.06 1</diffuse></material></visual>
+      </link>
+    </model>
+
+    <model name="overhead_camera">
+      <static>true</static>
+      <pose>0.45 0 0.95 0 1.570796 0</pose>
+      <link name="camera_link">
+        <visual name="body"><geometry><box><size>0.08 0.09 0.06</size></box></geometry><material><ambient>0.08 0.09 0.10 1</ambient><diffuse>0.12 0.13 0.14 1</diffuse></material></visual>
+        <sensor name="rgb_camera" type="camera">
+          <always_on>true</always_on>
+          <update_rate>15</update_rate>
+          <topic>/sorting_cell/camera/image_raw</topic>
+          <camera>
+            <horizontal_fov>1.05</horizontal_fov>
+            <image><width>640</width><height>480</height><format>R8G8B8</format></image>
+            <clip><near>0.05</near><far>5.0</far></clip>
+            <camera_info_topic>/sorting_cell/camera/camera_info</camera_info_topic>
+          </camera>
+        </sensor>
+      </link>
+    </model>
+  </world>
+</sdf>

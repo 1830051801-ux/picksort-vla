@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.cache/
+build/
+install/
+log/
+tools/*.log
+results/*
+!results/.gitkeep

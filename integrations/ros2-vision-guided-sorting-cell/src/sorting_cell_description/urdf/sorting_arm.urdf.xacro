@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="sorting_cell_arm">
+  <xacro:property name="blue" value="0.08 0.30 0.58 1"/>
+  <xacro:property name="dark" value="0.08 0.10 0.12 1"/>
+  <xacro:property name="silver" value="0.62 0.68 0.72 1"/>
+  <!-- Purple accents stay outside the red/orange perception masks. -->
+  <xacro:property name="yellow" value="0.55 0.18 0.75 1"/>
+
+  <link name="world"/>
+  <joint name="world_to_base" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+
+  <xacro:macro name="box_link" params="name size xyz rgba mass">
+    <link name="${name}">
+      <inertial>
+        <origin xyz="${xyz}"/>
+        <mass value="${mass}"/>
+        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+      </inertial>
+      <visual>
+        <origin xyz="${xyz}"/>
+        <geometry><box size="${size}"/></geometry>
+        <material name="${name}_material"><color rgba="${rgba}"/></material>
+      </visual>
+      <collision>
+        <origin xyz="${xyz}"/>
+        <geometry><box size="${size}"/></geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 0.08"/>
+      <mass value="8.0"/>
+      <inertia ixx="0.06" ixy="0" ixz="0" iyy="0.06" iyz="0" izz="0.08"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.08"/>
+      <geometry><cylinder radius="0.095" length="0.16"/></geometry>
+      <material name="base_dark"><color rgba="${dark}"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.08"/>
+      <geometry><cylinder radius="0.095" length="0.16"/></geometry>
+    </collision>
+  </link>
+
+  <link name="base_yaw_link">
+    <inertial>
+      <origin xyz="0 0 0.025"/>
+      <mass value="2.2"/>
+      <inertia ixx="0.015" ixy="0" ixz="0" iyy="0.015" iyz="0" izz="0.02"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.025"/>
+      <geometry><cylinder radius="0.073" length="0.05"/></geometry>
+      <material name="yaw_blue"><color rgba="${blue}"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.025"/>
+      <geometry><cylinder radius="0.073" length="0.05"/></geometry>
+    </collision>
+  </link>
+  <joint name="base_yaw_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="base_yaw_link"/>
+    <origin xyz="0 0 0.16"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.967" upper="2.967" effort="90" velocity="1.6"/>
+    <dynamics damping="1.2" friction="0.08"/>
+  </joint>
+
+  <xacro:box_link name="upper_arm_link" size="0.32 0.075 0.075" xyz="0.16 0 0" rgba="${blue}" mass="3.0"/>
+  <joint name="shoulder_joint" type="revolute">
+    <parent link="base_yaw_link"/>
+    <child link="upper_arm_link"/>
+    <origin xyz="0 0 0.05"/>
+    <!-- Match the analytical model: positive pitch raises a +X link. -->
+    <axis xyz="0 -1 0"/>
+    <limit lower="-1.40" upper="1.92" effort="110" velocity="1.3"/>
+    <dynamics damping="1.4" friction="0.1"/>
+  </joint>
+
+  <xacro:box_link name="forearm_link" size="0.28 0.064 0.064" xyz="0.14 0 0" rgba="${silver}" mass="2.2"/>
+  <joint name="elbow_joint" type="revolute">
+    <parent link="upper_arm_link"/>
+    <child link="forearm_link"/>
+    <origin xyz="0.32 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="-2.62" upper="2.62" effort="85" velocity="1.5"/>
+    <dynamics damping="1.0" friction="0.07"/>
+  </joint>
+
+  <xacro:box_link name="wrist_pitch_link" size="0.08 0.052 0.052" xyz="0.04 0 0" rgba="${yellow}" mass="0.85"/>
+  <joint name="wrist_pitch_joint" type="revolute">
+    <parent link="forearm_link"/>
+    <child link="wrist_pitch_link"/>
+    <origin xyz="0.28 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="-2.88" upper="2.88" effort="45" velocity="2.0"/>
+    <dynamics damping="0.65" friction="0.04"/>
+  </joint>
+
+  <link name="wrist_roll_link">
+    <inertial>
+      <mass value="0.55"/>
+      <inertia ixx="0.004" ixy="0" ixz="0" iyy="0.004" iyz="0" izz="0.004"/>
+    </inertial>
+    <visual>
+      <geometry><cylinder radius="0.034" length="0.045"/></geometry>
+      <origin rpy="0 1.570796 0"/>
+      <material name="wrist_dark"><color rgba="${dark}"/></material>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.034" length="0.045"/></geometry>
+      <origin rpy="0 1.570796 0"/>
+    </collision>
+  </link>
+  <joint name="wrist_roll_joint" type="revolute">
+    <parent link="wrist_pitch_link"/>
+    <child link="wrist_roll_link"/>
+    <origin xyz="0.08 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-3.14" upper="3.14" effort="30" velocity="2.4"/>
+    <dynamics damping="0.4" friction="0.03"/>
+  </joint>
+
+  <xacro:box_link name="tool_flange" size="0.04 0.075 0.055" xyz="0.02 0 0" rgba="${dark}" mass="0.45"/>
+  <joint name="tool_fixed_joint" type="fixed">
+    <parent link="wrist_roll_link"/>
+    <child link="tool_flange"/>
+    <origin xyz="0.02 0 0"/>
+  </joint>
+
+  <xacro:box_link name="left_finger_link" size="0.075 0.012 0.022" xyz="0.0375 0 0" rgba="${yellow}" mass="0.10"/>
+  <joint name="left_finger_joint" type="prismatic">
+    <parent link="tool_flange"/>
+    <child link="left_finger_link"/>
+    <origin xyz="0.04 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.003" upper="0.034" effort="35" velocity="0.12"/>
+    <dynamics damping="0.15" friction="0.02"/>
+  </joint>
+
+  <xacro:box_link name="right_finger_link" size="0.075 0.012 0.022" xyz="0.0375 0 0" rgba="${yellow}" mass="0.10"/>
+  <joint name="right_finger_joint" type="prismatic">
+    <parent link="tool_flange"/>
+    <child link="right_finger_link"/>
+    <origin xyz="0.04 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="0.003" upper="0.034" effort="35" velocity="0.12"/>
+    <mimic joint="left_finger_joint" multiplier="1.0" offset="0.0"/>
+    <dynamics damping="0.15" friction="0.02"/>
+  </joint>
+
+  <link name="tool0"/>
+  <joint name="tool0_fixed_joint" type="fixed">
+    <parent link="tool_flange"/>
+    <child link="tool0"/>
+    <origin xyz="0.10 0 0"/>
+  </joint>
+
+  <ros2_control name="GazeboSimSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+    <joint name="base_yaw_joint">
+      <command_interface name="position"><param name="min">-2.967</param><param name="max">2.967</param></command_interface>
+      <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="shoulder_joint">
+      <command_interface name="position"><param name="min">-1.40</param><param name="max">1.92</param></command_interface>
+      <state_interface name="position"><param name="initial_value">0.80</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="elbow_joint">
+      <command_interface name="position"><param name="min">-2.62</param><param name="max">2.62</param></command_interface>
+      <state_interface name="position"><param name="initial_value">-1.50</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="wrist_pitch_joint">
+      <command_interface name="position"><param name="min">-2.88</param><param name="max">2.88</param></command_interface>
+      <state_interface name="position"><param name="initial_value">0.70</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="wrist_roll_joint">
+      <command_interface name="position"><param name="min">-3.14</param><param name="max">3.14</param></command_interface>
+      <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="left_finger_joint">
+      <command_interface name="position"><param name="min">0.003</param><param name="max">0.034</param></command_interface>
+      <state_interface name="position"><param name="initial_value">0.032</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="right_finger_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+  <gazebo>
+    <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find sorting_cell_gazebo)/config/controllers.yaml</parameters>
+      <hold_joints>true</hold_joints>
+      <position_proportional_gain>0.8</position_proportional_gain>
+    </plugin>
+  </gazebo>
+</robot>

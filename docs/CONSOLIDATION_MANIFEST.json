@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-20",
+  "repository_role": "PickSort simulation and embodied learning",
+  "imports": [
+    {
+      "repository": "https://github.com/1830051801-ux/ros2-vision-guided-sorting-cell",
+      "commit": "a7c53de176abd791802da2a6b0ebfc12b077cb4b",
+      "destination": "integrations/ros2-vision-guided-sorting-cell",
+      "method": "git subtree content import"
+    }
+  ],
+  "verification": {
+    "root_ci": ".github/workflows/ci.yml",
+    "import_check": "tools/verify_consolidation.py",
+    "hardware_transport_opened": false
+  }
+}

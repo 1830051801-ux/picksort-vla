@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>sorting_cell_interfaces</name>
+  <version>1.0.0</version>
+  <description>Messages used by the vision-guided robot sorting workcell.</description>
+  <maintainer email="1830051801@qq.com">Zhong Jiawei</maintainer>
+  <license>MIT</license>
+  <url type="repository">https://github.com/1830051801-ux/ros2-vision-guided-sorting-cell</url>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <build_depend>rosidl_default_generators</build_depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

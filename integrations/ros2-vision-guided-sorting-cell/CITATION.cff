@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: >-
+  If you use this workcell in a project or publication, cite the software
+  version and the runtime evidence or configuration you reproduced.
+title: ROS 2 Vision-Guided Robot Sorting Workcell
+type: software
+authors:
+  - family-names: Zhong
+    given-names: Jiawei
+version: 1.0.0
+date-released: 2026-07-17
+license: MIT
+repository-code: https://github.com/1830051801-ux/ros2-vision-guided-sorting-cell
+abstract: >-
+  A ROS 2 Jazzy and Gazebo Harmonic reference workcell for camera-guided
+  pick-and-place sorting with measured joint feedback and reproducible runtime
+  verification.
+keywords:
+  - ROS 2
+  - Gazebo Harmonic
+  - robot manipulation
+  - computer vision
+  - ros2_control
