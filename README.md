@@ -17,6 +17,18 @@ bridge.
 > The committed benchmark is simulation-only. No physical-robot success rate
 > is claimed.
 
+## Consolidated workcell
+
+[成果图册 / Visual showcase](docs/SHOWCASE.md) · [Download consolidated source](https://github.com/1830051801-ux/picksort-vla/releases/tag/consolidation-20260920)
+
+`PickSort-VLA` is now the public **simulation and embodied-learning** line. The ROS 2 Jazzy / Gazebo vision-guided workcell is included intact under [`integrations/ros2-vision-guided-sorting-cell/`](integrations/ros2-vision-guided-sorting-cell/), including its independent documentation, MIT license, headless demo, evidence, Gazebo world and ROS 2 packages.
+
+![ROS 2 sorting-cell preview](integrations/ros2-vision-guided-sorting-cell/docs/assets/sorting_cell_demo.gif)
+
+![Two simulation paths](docs/assets/repository-map.svg)
+
+The repository map and source commits are recorded in [docs/CONSOLIDATION.md](docs/CONSOLIDATION.md). This import is a simulation integration; it does not turn the workcell evidence into a physical-robot result.
+
 The public project name and repository are now **PickSort-VLA**. For v0.x
 compatibility, the Python distribution remains `smartpick-vla`, the import is
 `smartpick_vla`, and existing ROS/checkpoint identifiers are unchanged. New

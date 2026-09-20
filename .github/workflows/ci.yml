@@ -14,6 +14,22 @@ permissions:
   contents: read
 
 jobs:
+  imported-workcell:
+    name: Imported ROS 2 workcell offline checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - run: python -m pip install -r integrations/ros2-vision-guided-sorting-cell/requirements-dev.txt
+      - run: python tools/verify_consolidation.py
+      - run: python integrations/ros2-vision-guided-sorting-cell/tools/check_project.py
+      - run: python -m pytest -q
+        working-directory: integrations/ros2-vision-guided-sorting-cell
+      - run: python integrations/ros2-vision-guided-sorting-cell/tools/run_headless_demo.py --no-animation --output /tmp/workcell-check
+
   test:
     name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}

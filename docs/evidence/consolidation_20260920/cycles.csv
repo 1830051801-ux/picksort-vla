@@ -1,0 +1,4 @@
+object_id,class_name,destination,success,duration_s,reason
+part_blue,accepted,accepted_bin,True,12.279999999999994,
+part_red,scratch,reject_bin,True,11.919999999999982,
+part_orange,unknown,rework_bin,True,12.59999999999999,
