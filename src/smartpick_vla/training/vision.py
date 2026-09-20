@@ -112,8 +112,10 @@ class PerceptionLocalizationDataset(Dataset[dict[str, Tensor]]):
                 raise ValueError("keypoint_xy must have shape [N,C,2] for the requested camera")
             valid_keypoints = np.isfinite(keypoints).all(axis=-1)
             visible &= valid_keypoints
-            centers = keypoints / np.asarray(
-                [max(1, width - 1), max(1, height - 1)], dtype=np.float32
+            np.divide(
+                keypoints,
+                np.asarray([max(1, width - 1), max(1, height - 1)], dtype=np.float32),
+                out=centers,
             )
             self.localization_label_source = "camera_projected_object_origin"
         centers = np.clip(centers, 0.0, 1.0)
