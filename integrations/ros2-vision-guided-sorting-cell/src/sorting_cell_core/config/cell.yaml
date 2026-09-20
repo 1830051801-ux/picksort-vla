@@ -1,0 +1,22 @@
+cell:
+  frame_id: base_link
+  command_period_s: 0.04
+  gripper:
+    open_m: 0.032
+    closed_m: 0.004
+  workspace:
+    min_radius_m: 0.18
+    max_radius_m: 0.69
+    min_z_m: 0.055
+    max_z_m: 0.56
+    max_abs_y_m: 0.40
+    minimum_confidence: 0.70
+  destinations:
+    accepted_bin: [0.30, 0.30, 0.075]
+    reject_bin: [0.30, -0.30, 0.075]
+    rework_bin: [0.48, 0.25, 0.075]
+  routing:
+    accepted: accepted_bin
+    scratch: reject_bin
+    dent: reject_bin
+    unknown: rework_bin

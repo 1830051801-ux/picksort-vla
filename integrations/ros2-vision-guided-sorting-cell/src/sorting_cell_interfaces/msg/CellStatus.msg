@@ -1,0 +1,7 @@
+std_msgs/Header header
+string state
+string active_object_id
+uint32 completed_cycles
+uint32 failed_cycles
+float32 current_cycle_time_s
+string message

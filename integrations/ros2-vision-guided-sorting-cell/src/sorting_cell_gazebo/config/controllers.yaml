@@ -1,0 +1,39 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 250
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    cell_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+cell_controller:
+  ros__parameters:
+    joints:
+      - base_yaw_joint
+      - shoulder_joint
+      - elbow_joint
+      - wrist_pitch_joint
+      - wrist_roll_joint
+      - left_finger_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    interpolation_method: splines
+    allow_partial_joints_goal: false
+    open_loop_control: false
+    constraints:
+      # The coordinator sends complete state segments through the action API.
+      # Path checks stay disabled to tolerate simulator scheduling jitter, while
+      # final goal checks and coordinator-side joint feedback remain enforced.
+      stopped_velocity_tolerance: 0.20
+      goal_time: 3.0
+      base_yaw_joint: {trajectory: 0.0, goal: 0.12}
+      shoulder_joint: {trajectory: 0.0, goal: 0.12}
+      elbow_joint: {trajectory: 0.0, goal: 0.12}
+      wrist_pitch_joint: {trajectory: 0.0, goal: 0.12}
+      wrist_roll_joint: {trajectory: 0.0, goal: 0.12}
+      left_finger_joint: {trajectory: 0.0, goal: 0.01}

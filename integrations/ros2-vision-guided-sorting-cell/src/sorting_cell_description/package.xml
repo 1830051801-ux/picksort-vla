@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>sorting_cell_description</name>
+  <version>1.0.0</version>
+  <description>URDF/Xacro model of the five-axis industrial sorting arm.</description>
+  <maintainer email="1830051801@qq.com">Zhong Jiawei</maintainer>
+  <license>MIT</license>
+  <url type="repository">https://github.com/1830051801-ux/ros2-vision-guided-sorting-cell</url>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>sorting_cell_gazebo</exec_depend>
+  <exec_depend>urdf</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>gz_ros2_control</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

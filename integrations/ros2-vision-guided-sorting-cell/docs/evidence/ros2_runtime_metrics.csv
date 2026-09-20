@@ -1,0 +1,4 @@
+timestamp_ns,object_id,state,cycle_time_s,completed,failed,message
+17220000000,part_blue,COMPLETE,12.800,1,0,routed to accepted_bin
+29940000000,part_red,COMPLETE,12.309,2,0,routed to reject_bin
+43420000000,part_orange,COMPLETE,13.384,3,0,routed to rework_bin

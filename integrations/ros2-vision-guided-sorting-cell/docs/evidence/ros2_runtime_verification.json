@@ -1,0 +1,84 @@
+{
+  "passed": true,
+  "elapsed_wall_s": 52.208,
+  "checks": {
+    "controllers_active": true,
+    "color_perception_node_active": true,
+    "camera_stream_received": true,
+    "joint_states_received": true,
+    "three_vision_detections_received": true,
+    "detections_are_base_link_and_expected_classes": true,
+    "three_unique_terminal_cycles": true,
+    "no_failed_cycles": true,
+    "single_terminal_event_per_object": true,
+    "gazebo_named_pose_query_succeeded": true,
+    "part_blue_reported_accepted_bin": true,
+    "part_blue_physically_in_accepted_bin": true,
+    "part_red_reported_reject_bin": true,
+    "part_red_physically_in_reject_bin": true,
+    "part_orange_reported_rework_bin": true,
+    "part_orange_physically_in_rework_bin": true
+  },
+  "controller_states": {
+    "cell_controller": "active",
+    "joint_state_broadcaster": "active"
+  },
+  "camera_frames": 585,
+  "joint_state_messages": 10587,
+  "terminal_counts": {
+    "part_blue": 1,
+    "part_red": 1,
+    "part_orange": 1
+  },
+  "detections": {
+    "part_blue": {
+      "class_name": "accepted",
+      "frame_id": "base_link",
+      "confidence": 0.9537,
+      "position": [
+        0.47137,
+        -0.13147,
+        0.075
+      ]
+    },
+    "part_red": {
+      "class_name": "scratch",
+      "frame_id": "base_link",
+      "confidence": 0.9114,
+      "position": [
+        0.50086,
+        0.01433,
+        0.075
+      ]
+    },
+    "part_orange": {
+      "class_name": "unknown",
+      "frame_id": "base_link",
+      "confidence": 0.9486,
+      "position": [
+        0.42818,
+        0.14388,
+        0.075
+      ]
+    }
+  },
+  "entity_positions": {
+    "part_blue": [
+      0.29999999999966903,
+      0.29999999999966886,
+      0.08549899375636177
+    ],
+    "part_red": [
+      0.2999999999996684,
+      -0.2999999999996695,
+      0.08549980332623289
+    ],
+    "part_orange": [
+      0.47999999999922266,
+      0.2499999999995948,
+      0.08549490743692954
+    ]
+  },
+  "failures": [],
+  "pose_query_error": ""
+}

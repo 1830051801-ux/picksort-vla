@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>sorting_cell_gazebo</name>
+  <version>1.0.0</version>
+  <description>Gazebo Harmonic world and ros2_control configuration for the sorting workcell.</description>
+  <maintainer email="1830051801@qq.com">Zhong Jiawei</maintainer>
+  <license>MIT</license>
+  <url type="repository">https://github.com/1830051801-ux/ros2-vision-guided-sorting-cell</url>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>gz_ros2_control</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>ros_gz_sim</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
