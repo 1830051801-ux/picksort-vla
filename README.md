@@ -141,6 +141,22 @@ six-axis mission showcase above uses the privileged expert, not a learned
 policy. The full data schema, safety behavior, recorded commands, and current
 limitations are in [Embodied simulation upgrade](docs/EMBODIED_SIMULATION_UPGRADE.md).
 
+## Auxiliary-supervision upgrade (2026-09-22)
+
+The Temporal VLA training path now accepts simulator-projected target pixels
+(`goal_xy`) and privileged waypoint phase labels (`stage_index`) as auxiliary
+tasks. The six-axis archive generated with
+`configs/train/data_mission_six_axis_upgrade.yaml` contains 24 randomized
+MuJoCo episodes, 21 successful expert episodes, and 7,780 transitions. A CUDA
+run with `configs/train/temporal_vla_mission_six_axis_aux.yaml` reached a best
+validation loss of 0.1163 after 1,140 optimizer steps.
+
+The fixed-seed five-suite replay is intentionally reported without smoothing:
+the privileged IK expert completed 17/20 episodes, while the newly trained
+auxiliary Temporal VLA completed 0/20 and timed out on 19/20. This is a valid
+training-and-replay result, not a deployment claim. The complete interpretation
+and command boundary are in [the 2026-09-22 offline verification record](docs/OFFLINE_VERIFICATION_20260922.md).
+
 ## Verified six-axis vision loop
 
 The release path exercises a separate RGB-guided controller on the six-axis

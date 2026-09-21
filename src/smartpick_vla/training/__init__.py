@@ -14,6 +14,8 @@ from smartpick_vla.training.residual_sac import ResidualSAC, ResidualSACConfig
 from smartpick_vla.training.supervised import (
     SupervisedStepResult,
     action_imitation_loss,
+    multitask_imitation_loss,
+    multitask_train_step,
     supervised_train_step,
 )
 from smartpick_vla.training.vision import (
@@ -37,6 +39,8 @@ __all__ = [
     "load_trained_policy",
     "load_vision_localizer",
     "localization_loss",
+    "multitask_imitation_loss",
+    "multitask_train_step",
     "save_checkpoint",
     "supervised_train_step",
     "train_imitation",

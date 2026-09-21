@@ -8,6 +8,11 @@ intends to use semantic versioning after its first tagged release.
 
 ### Added
 
+- Multi-task Temporal VLA auxiliary heads for simulator-projected target pixels
+  and privileged waypoint phases, with six-axis data-generation/training
+  configs, checkpoint manifests, and a fixed-seed replay record. The replay
+  records the learned policy's current 0/20 result rather than presenting it as
+  a hardware or closed-loop success.
 - Camera-clear six-axis home pose selected by fixed-seed visibility/collision
   checks, with a seed-909 top-camera visibility regression test.
 - Versioned `vision_six_axis_release_v2` synthetic perception dataset,

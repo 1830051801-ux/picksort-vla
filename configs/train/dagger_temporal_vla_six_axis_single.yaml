@@ -1,0 +1,28 @@
+# Single-object curriculum for the spatial-grounding VLA. It focuses on the
+# complete pregrasp -> descend -> grasp -> transfer -> release cycle before
+# mixing back into three-object missions.
+collection:
+  episodes: 96
+  seed: 20260926
+  image_size: 64
+  max_episode_steps: 240
+  grasp_assist: true
+  six_axis: true
+  mission_length: 1
+  expert_action_probability: 0.70
+  instruction_splits: [train, paraphrase, ood]
+  ood_layout_probability: 0.30
+
+policy_replan_interval: 1
+
+domain_randomization:
+  enabled: true
+  object_mass_scale: [0.65, 1.45]
+  friction_scale: [0.55, 1.55]
+  camera_position_std_m: 0.010
+  camera_fovy_delta_deg: 3.0
+  light_intensity_scale: [0.72, 1.28]
+  object_color_jitter: 0.10
+  robot_state_noise_std: 0.002
+  detection_noise_std_m: 0.004
+  control_delay_steps: [0, 2]

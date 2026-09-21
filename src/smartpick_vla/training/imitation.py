@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import math
 import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -25,7 +26,10 @@ from smartpick_vla.models import (
 from smartpick_vla.training.checkpoint import load_checkpoint_payload, save_checkpoint
 from smartpick_vla.training.supervised import (
     action_imitation_loss,
+    multitask_imitation_loss,
+    multitask_train_step,
     policy_forward_from_batch,
+    policy_forward_with_aux_from_batch,
     supervised_train_step,
 )
 from smartpick_vla.utils.io import atomic_write_json
@@ -48,6 +52,9 @@ class ImitationTrainingConfig:
     num_workers: int = 0
     gradient_clip_norm: float = 1.0
     loss_kind: Literal["mse", "smooth_l1"] = "smooth_l1"
+    include_failed_expert_labels: bool = False
+    goal_loss_weight: float = 0.0
+    stage_loss_weight: float = 0.0
 
     def __post_init__(self) -> None:
         if self.epochs < 1 or self.batch_size < 1:
@@ -58,6 +65,15 @@ class ImitationTrainingConfig:
             raise ValueError("validation_fraction must be in (0, 0.5)")
         if self.num_workers < 0:
             raise ValueError("num_workers must be non-negative")
+        if not isinstance(self.include_failed_expert_labels, bool):
+            raise TypeError("include_failed_expert_labels must be a bool")
+        if (
+            not math.isfinite(self.goal_loss_weight)
+            or not math.isfinite(self.stage_loss_weight)
+            or self.goal_loss_weight < 0.0
+            or self.stage_loss_weight < 0.0
+        ):
+            raise ValueError("auxiliary loss weights must be finite and non-negative")
 
 
 def _resolve_device(requested: str) -> torch.device:
@@ -82,6 +98,32 @@ def _build_policy(
         return CompactVLAPolicy(vla_config), vla_config
     temporal_config = TemporalVLAConfig(**options)
     return TemporalVLAPolicy(temporal_config), temporal_config
+
+
+_AUXILIARY_STATE_PREFIXES = ("goal_head.", "stage_head.")
+
+
+def _load_policy_state_compat(model: nn.Module, state: Any) -> None:
+    """Load old action-only checkpoints without hiding unrelated mismatch.
+
+    The only tolerated absent weights are the two newly introduced auxiliary
+    heads.  This preserves inference for released action-only checkpoints and
+    still fails loudly on a wrong architecture or a corrupt checkpoint.
+    """
+
+    if not isinstance(state, dict):
+        raise ValueError("checkpoint model_state is malformed")
+    incompatible = model.load_state_dict(state, strict=False)
+    missing = [
+        name
+        for name in incompatible.missing_keys
+        if not name.startswith(_AUXILIARY_STATE_PREFIXES)
+    ]
+    if missing or incompatible.unexpected_keys:
+        raise ValueError(
+            "checkpoint model state is incompatible: "
+            f"missing={missing}, unexpected={list(incompatible.unexpected_keys)}"
+        )
 
 
 def _episode_split(
@@ -128,7 +170,7 @@ def train_imitation(
         initial_extra = initial_payload.get("extra", {})
         if initial_extra.get("policy_kind") != training_config.policy:
             raise ValueError("initial checkpoint policy kind does not match training config")
-        model.load_state_dict(initial_payload["model_state"])
+        _load_policy_state_compat(model, initial_payload["model_state"])
     observation_horizon = 1
     if training_config.policy == "bc":
         action_horizon = 1
@@ -145,8 +187,27 @@ def train_imitation(
         dataset_path,
         action_horizon=action_horizon,
         observation_horizon=observation_horizon,
-        successful_only=True,
+        # Conventional demonstrations train only on completed episodes.  DAgger
+        # archives retain real failed rollout flags while providing an expert
+        # recovery label at each visited simulator state; those labels require
+        # an explicit config opt-in rather than silently changing the filter.
+        successful_only=not training_config.include_failed_expert_labels,
     )
+    auxiliary_requested = (
+        training_config.goal_loss_weight > 0.0 or training_config.stage_loss_weight > 0.0
+    )
+    if auxiliary_requested and training_config.policy != "temporal_vla":
+        raise ValueError("goal/stage supervision is currently supported only by temporal_vla")
+    if training_config.goal_loss_weight > 0.0 and "goal_xy" not in dataset.arrays:
+        raise ValueError("goal supervision requested but dataset has no goal_xy labels")
+    if training_config.stage_loss_weight > 0.0 and "stage_index" not in dataset.arrays:
+        raise ValueError("stage supervision requested but dataset has no stage_index labels")
+    if training_config.stage_loss_weight > 0.0:
+        if not isinstance(model_config, TemporalVLAConfig):
+            raise TypeError("stage supervision requires TemporalVLAConfig")
+        observed_stage = int(np.max(dataset.arrays["stage_index"]))
+        if observed_stage >= model_config.stage_classes:
+            raise ValueError("dataset stage_index exceeds model stage_classes")
     train_indices, validation_indices, train_episodes, validation_episodes = _episode_split(
         dataset,
         validation_fraction=training_config.validation_fraction,
@@ -184,26 +245,54 @@ def train_imitation(
     for epoch in range(1, training_config.epochs + 1):
         started = time.perf_counter()
         train_losses: list[float] = []
+        train_action_losses: list[float] = []
+        train_goal_losses: list[float] = []
+        train_stage_losses: list[float] = []
         gradient_norms: list[float] = []
         for batch in train_loader:
-            result = supervised_train_step(
-                model,
-                optimizer,
-                batch,
-                gradient_clip_norm=training_config.gradient_clip_norm,
-                loss_kind=training_config.loss_kind,
-            )
+            if auxiliary_requested:
+                result = multitask_train_step(
+                    model,
+                    optimizer,
+                    batch,
+                    gradient_clip_norm=training_config.gradient_clip_norm,
+                    loss_kind=training_config.loss_kind,
+                    goal_loss_weight=training_config.goal_loss_weight,
+                    stage_loss_weight=training_config.stage_loss_weight,
+                )
+            else:
+                result = supervised_train_step(
+                    model,
+                    optimizer,
+                    batch,
+                    gradient_clip_norm=training_config.gradient_clip_norm,
+                    loss_kind=training_config.loss_kind,
+                )
             train_losses.append(result.loss)
+            train_action_losses.append(result.loss if result.action_loss is None else result.action_loss)
+            train_goal_losses.append(result.goal_loss)
+            train_stage_losses.append(result.stage_loss)
             gradient_norms.append(result.gradient_norm)
             global_step += 1
-        validation_loss = _validation_loss(
-            model, validation_loader, device=device, loss_kind=training_config.loss_kind
+        validation = _validation_metrics(
+            model,
+            validation_loader,
+            device=device,
+            loss_kind=training_config.loss_kind,
+            goal_loss_weight=training_config.goal_loss_weight,
+            stage_loss_weight=training_config.stage_loss_weight,
         )
         row = {
             "epoch": epoch,
             "global_step": global_step,
             "train_loss": float(np.mean(train_losses)),
-            "validation_loss": validation_loss,
+            "train_action_loss": float(np.mean(train_action_losses)),
+            "train_goal_loss": float(np.mean(train_goal_losses)),
+            "train_stage_loss": float(np.mean(train_stage_losses)),
+            "validation_loss": validation["loss"],
+            "validation_action_loss": validation["action_loss"],
+            "validation_goal_loss": validation["goal_loss"],
+            "validation_stage_loss": validation["stage_loss"],
             "mean_gradient_norm": float(np.mean(gradient_norms)),
             "elapsed_s": time.perf_counter() - started,
         }
@@ -228,8 +317,8 @@ def train_imitation(
             config=model_config,
             extra=common_extra,
         )
-        if validation_loss < best_validation:
-            best_validation = validation_loss
+        if validation["loss"] < best_validation:
+            best_validation = validation["loss"]
             best_epoch = epoch
             save_checkpoint(
                 destination / "best.pt",
@@ -250,9 +339,21 @@ def train_imitation(
         "dataset": {
             "path": str(Path(dataset_path)),
             "sha256": sha256_file(dataset_path),
+            "successful_episode_filter": not training_config.include_failed_expert_labels,
         },
         "model_config": asdict(model_config),
         "training_config": asdict(training_config),
+        "auxiliary_supervision": {
+            "requested": auxiliary_requested,
+            "goal_loss_weight": training_config.goal_loss_weight,
+            "stage_loss_weight": training_config.stage_loss_weight,
+            "label_source": (
+                "simulator-projected target pixels and privileged IK waypoint stages"
+                if auxiliary_requested
+                else None
+            ),
+            "physical_robot_data": False,
+        },
         "initial_checkpoint": (
             None
             if initial_checkpoint is None
@@ -289,31 +390,67 @@ def train_imitation(
 
 
 @torch.no_grad()
-def _validation_loss(
+def _validation_metrics(
     model: nn.Module,
     loader: DataLoader[Any],
     *,
     device: torch.device,
     loss_kind: Literal["mse", "smooth_l1"],
-) -> float:
+    goal_loss_weight: float = 0.0,
+    stage_loss_weight: float = 0.0,
+) -> dict[str, float]:
     model.eval()
     losses: list[float] = []
+    action_losses: list[float] = []
+    goal_losses: list[float] = []
+    stage_losses: list[float] = []
     weights: list[int] = []
     for batch in loader:
         first_parameter = next(model.parameters(), None)
         if first_parameter is None:
             raise ValueError("model has no parameters")
-        prediction, target, mask = policy_forward_from_batch(
-            model,
-            batch,
-            device=device,
-            dtype=first_parameter.dtype,
-        )
-        loss = action_imitation_loss(prediction, target, mask=mask, loss_kind=loss_kind)
+        if goal_loss_weight > 0.0 or stage_loss_weight > 0.0:
+            prediction, target, mask, auxiliary = policy_forward_with_aux_from_batch(
+                model,
+                batch,
+                device=device,
+                dtype=first_parameter.dtype,
+            )
+            loss, action_loss, goal_loss, stage_loss = multitask_imitation_loss(
+                prediction,
+                target,
+                mask,
+                auxiliary,
+                batch,
+                device=device,
+                dtype=first_parameter.dtype,
+                loss_kind=loss_kind,
+                goal_loss_weight=goal_loss_weight,
+                stage_loss_weight=stage_loss_weight,
+            )
+        else:
+            prediction, target, mask = policy_forward_from_batch(
+                model,
+                batch,
+                device=device,
+                dtype=first_parameter.dtype,
+            )
+            loss = action_imitation_loss(prediction, target, mask=mask, loss_kind=loss_kind)
+            action_loss = loss
+            goal_loss = torch.zeros((), device=device, dtype=first_parameter.dtype)
+            stage_loss = torch.zeros((), device=device, dtype=first_parameter.dtype)
         batch_size = int(target.shape[0])
         losses.append(float(loss.cpu()))
+        action_losses.append(float(action_loss.cpu()))
+        goal_losses.append(float(goal_loss.cpu()))
+        stage_losses.append(float(stage_loss.cpu()))
         weights.append(batch_size)
-    return float(np.average(losses, weights=weights))
+    return {
+        "loss": float(np.average(losses, weights=weights)),
+        "action_loss": float(np.average(action_losses, weights=weights)),
+        "goal_loss": float(np.average(goal_losses, weights=weights)),
+        "stage_loss": float(np.average(stage_losses, weights=weights)),
+    }
 
 
 def load_trained_policy(
@@ -332,7 +469,7 @@ def load_trained_policy(
     ):
         raise ValueError("checkpoint lacks policy construction metadata")
     model, _ = _build_policy(policy_kind, model_config)
-    model.load_state_dict(payload["model_state"])
+    _load_policy_state_compat(model, payload["model_state"])
     model.to(device)
     model.eval()
     return model, dict(extra)

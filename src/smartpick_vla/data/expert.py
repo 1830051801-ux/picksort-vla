@@ -21,12 +21,30 @@ ExpertStage = Literal[
     "done",
 ]
 
+EXPERT_STAGE_INDEX: dict[ExpertStage, int] = {
+    "pregrasp": 0,
+    "descend": 1,
+    "close": 2,
+    "lift": 3,
+    "transfer": 4,
+    "lower": 5,
+    "release": 6,
+    "retreat": 7,
+    "done": 8,
+}
+
 
 @dataclass(slots=True)
 class ExpertDiagnostics:
     stage: ExpertStage
     stage_step: int
     position_error_m: float
+
+    @property
+    def stage_index(self) -> int:
+        """Stable class index for temporal-VLA phase supervision."""
+
+        return EXPERT_STAGE_INDEX[self.stage]
 
 
 class IKWaypointExpert:
@@ -136,3 +154,19 @@ class IKWaypointExpert:
             stage_step=self.stage_step,
             position_error_m=distance,
         )
+
+    def target_pixel_xy(self, *, camera: str = "top") -> tuple[np.ndarray, bool]:
+        """Return a normalized simulated target pixel for auxiliary labels.
+
+        This is a privileged MuJoCo label-generation helper only.  Deployable
+        policies must infer the target from RGB/YOLO and never call it.
+        """
+
+        try:
+            pixel = self.env.project_world_to_pixel(self.env.target_position(), camera=camera)  # type: ignore[arg-type]
+        except (ValueError, RuntimeError):
+            return np.zeros(2, dtype=np.float32), False
+        image_size = float(max(1, self.env.image_size - 1))
+        normalized = np.asarray(pixel, dtype=np.float64) / image_size
+        visible = bool(np.isfinite(normalized).all() and (normalized >= 0.0).all() and (normalized <= 1.0).all())
+        return np.clip(normalized, 0.0, 1.0).astype(np.float32), visible
