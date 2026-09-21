@@ -28,4 +28,8 @@
 | Ruff 检查与格式 | 通过 |
 | 新的运动学演示 | 3/3 路由通过，PNG/GIF/JSON/CSV 已归档 |
 
+## 现场能力确认（2026-09-22）
+
+小U现场操作者确认真实机械臂已经成功运动，能够抓取桌面物品、整理桌面和清理垃圾，预设功能已完备。PickSort-VLA 仍按仿真与具身学习主线发布；这条 `operator_reported` 记录不改写离线 benchmark，也不提供未经记录的成功率、延迟或负载数字。详见[现场能力回报](evidence/field_validation_20260922/README.md)。
+
 配套机械 CAD、Pi/F407、六轴数字孪生和策略量化资产见 [小U主仓库](https://github.com/1830051801-ux/xiaou-vision-robot-arm)。

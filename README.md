@@ -17,6 +17,12 @@ bridge.
 > The committed benchmark is simulation-only. No physical-robot success rate
 > is claimed.
 
+The companion XiaoU project records a 2026-09-22 operator-reported field
+result: the real arm moved successfully and completed desktop-item grasping,
+desk tidying, and trash cleanup. This is a qualitative field confirmation, not
+a PickSort benchmark or a quantified physical-robot success rate; see the
+[field record](docs/evidence/field_validation_20260922/README.md).
+
 ## Simulation workcell
 
 [成果图册 / Visual showcase](docs/SHOWCASE.md) · [Download source package](https://github.com/1830051801-ux/picksort-vla/releases/tag/consolidation-20260920)

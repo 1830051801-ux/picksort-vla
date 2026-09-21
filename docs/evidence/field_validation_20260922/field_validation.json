@@ -1,0 +1,17 @@
+{
+  "record_id": "picksort-field-validation-20260922",
+  "recorded_at": "2026-09-22",
+  "project": "PickSort-VLA",
+  "claim_level": "operator_reported",
+  "source": "XiaoU project operator field feedback",
+  "capabilities": {
+    "real_motion": "confirmed_by_operator",
+    "desktop_item_grasping": "confirmed_by_operator",
+    "desk_tidying": "confirmed_by_operator",
+    "trash_cleanup": "confirmed_by_operator",
+    "preset_functions": "confirmed_complete_by_operator"
+  },
+  "raw_artifacts_received": false,
+  "metrics": null,
+  "note": "定性现场结果不等于仿真 benchmark，也不提供未经记录的成功率或延迟。"
+}
