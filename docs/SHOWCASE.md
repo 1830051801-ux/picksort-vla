@@ -28,8 +28,8 @@
 | Ruff 检查与格式 | 通过 |
 | 新的运动学演示 | 3/3 路由通过，PNG/GIF/JSON/CSV 已归档 |
 
-## 现场功能验证（2026-09-22）
+## XiaoU field record (2026-09-23)
 
-小U真实机械臂已完成运动闭环，并完成桌面物品抓取、桌面整理和垃圾清理，预设功能均已完成。示教位复现回传为 `9.375 s`、单段轨迹、最大关节误差约 `0.311°`。详见[现场能力回报](evidence/field_validation_20260922/README.md)。
+小U工作簿记录了真实运动、桌面物品抓取、桌面整理和垃圾清理。PickSort-VLA 只引用这份现场记录，不把它的数字改写为仿真策略结果。详见[现场数据索引](evidence/field_validation_20260923/README.md)。
 
 配套机械 CAD、Pi/F407、六轴数字孪生和策略量化资产见 [小U主仓库](https://github.com/1830051801-ux/xiaou-vision-robot-arm)。

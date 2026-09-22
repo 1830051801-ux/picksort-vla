@@ -17,11 +17,11 @@ bridge.
 > The committed benchmark is simulation-only. No physical-robot success rate
 > is claimed.
 
-The companion XiaoU project records a 2026-09-22 field validation result: the
-real arm completed motion, desktop-item grasping, desk tidying, trash cleanup,
-and the preset task set. The teach-pose replay returned in 9.375 s with one
-trajectory segment and a maximum joint error of about 0.311 degrees. See the
-[field record](docs/evidence/field_validation_20260922/README.md).
+The companion XiaoU project records a 2026-09-23 field workbook containing
+real-arm motion, desktop-item grasping, desk tidying, trash cleanup, and the
+preset task set. See the [field record index](docs/evidence/field_validation_20260923/README.md).
+PickSort's simulation and training measurements remain separate from that
+workbook.
 
 ## Simulation workcell
 
