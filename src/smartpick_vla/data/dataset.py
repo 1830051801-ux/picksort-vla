@@ -21,6 +21,11 @@ REQUIRED_ARRAYS = {
     "episode_success",
 }
 
+# Optional, aligned labels used by the temporal VLA auxiliary heads.  They are
+# deliberately not required so archives produced before multi-task training
+# continue to load unchanged.
+OPTIONAL_ARRAYS = {"goal_xy", "goal_visible", "stage_index"}
+
 
 @dataclass(frozen=True, slots=True)
 class DatasetStatistics:
@@ -66,6 +71,26 @@ def validate_trajectory_arrays(arrays: dict[str, np.ndarray]) -> DatasetStatisti
         raise ValueError("state/action arrays contain NaN or infinity")
     if np.max(np.abs(arrays["action"])) > 1.00001:
         raise ValueError("normalized actions must be in [-1,1]")
+
+    for key in OPTIONAL_ARRAYS.intersection(arrays):
+        if arrays[key].shape[0] != transition_count:
+            raise ValueError(f"array {key!r} has inconsistent leading dimension")
+    if "goal_xy" in arrays:
+        goal_xy = np.asarray(arrays["goal_xy"])
+        if goal_xy.shape != (transition_count, 2):
+            raise ValueError("goal_xy must have shape [N,2]")
+        if not np.isfinite(goal_xy).all() or np.min(goal_xy) < -1e-6 or np.max(goal_xy) > 1.000001:
+            raise ValueError("goal_xy must be finite normalized coordinates in [0,1]")
+    if "goal_visible" in arrays:
+        visible = np.asarray(arrays["goal_visible"])
+        if visible.shape != (transition_count,):
+            raise ValueError("goal_visible must have shape [N]")
+    if "stage_index" in arrays:
+        stage = np.asarray(arrays["stage_index"])
+        if stage.shape != (transition_count,):
+            raise ValueError("stage_index must have shape [N]")
+        if not np.isfinite(stage).all() or np.min(stage) < 0:
+            raise ValueError("stage_index must contain non-negative finite class indices")
 
     episode_ids = np.asarray(arrays["episode_id"], dtype=np.int64)
     unique_episodes = np.unique(episode_ids)
@@ -148,6 +173,20 @@ class TrajectoryDataset(Dataset[dict[str, Any]]):
             "episode_id": int(self.arrays["episode_id"][transition_index]),
             "step_index": int(self.arrays["step_index"][transition_index]),
         }
+        # Keep labels optional at sample level as well; the collated batch only
+        # receives these keys when the archive contains them.
+        if "goal_xy" in self.arrays:
+            sample["goal_xy"] = torch.from_numpy(
+                self.arrays["goal_xy"][transition_index].astype(np.float32, copy=True)
+            )
+        if "goal_visible" in self.arrays:
+            sample["goal_visible"] = torch.tensor(
+                bool(self.arrays["goal_visible"][transition_index]), dtype=torch.bool
+            )
+        if "stage_index" in self.arrays:
+            sample["stage_index"] = torch.tensor(
+                int(self.arrays["stage_index"][transition_index]), dtype=torch.long
+            )
         if self.observation_horizon > 1:
             sample.update(self._observation_history(transition_index))
         if self.action_horizon == 1:

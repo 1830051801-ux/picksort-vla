@@ -1,0 +1,35 @@
+training:
+  policy: temporal_vla
+  epochs: 28
+  batch_size: 64
+  learning_rate: 0.00015
+  weight_decay: 0.00001
+  validation_fraction: 0.20
+  seed: 20260923
+  device: auto
+  num_workers: 0
+  gradient_clip_norm: 1.0
+  loss_kind: smooth_l1
+  # DAgger labels are valid expert recovery actions even if the mixed behaviour
+  # episode itself failed. This opt-in preserves conventional demo semantics.
+  include_failed_expert_labels: true
+
+model:
+  robot_state_dim: 29
+  action_dim: 6
+  # Preserve the checkpoint's 12-query decoder so this is a true DAgger
+  # fine-tune rather than a silently incompatible architecture reset.
+  action_horizon: 12
+  observation_horizon: 6
+  d_model: 128
+  nhead: 4
+  temporal_layers: 3
+  decoder_layers: 3
+  language_layers: 2
+  feedforward_dim: 256
+  language_max_length: 64
+  vision_grid_size: 5
+  dropout: 0.05
+  squash_actions: true
+  freeze_vision: false
+  freeze_language: false

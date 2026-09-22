@@ -1,0 +1,36 @@
+# Small, labelled auxiliary-head smoke run. This is an offline regression,
+# not a production training budget.
+training:
+  policy: temporal_vla
+  epochs: 2
+  batch_size: 16
+  learning_rate: 0.0002
+  weight_decay: 0.00001
+  validation_fraction: 0.25
+  seed: 20260922
+  device: auto
+  num_workers: 0
+  gradient_clip_norm: 1.0
+  loss_kind: smooth_l1
+  include_failed_expert_labels: false
+  goal_loss_weight: 0.35
+  stage_loss_weight: 0.20
+
+model:
+  robot_state_dim: 29
+  action_dim: 6
+  action_horizon: 6
+  observation_horizon: 4
+  d_model: 64
+  nhead: 4
+  temporal_layers: 2
+  decoder_layers: 2
+  language_layers: 1
+  feedforward_dim: 128
+  language_max_length: 64
+  vision_grid_size: 4
+  vision_pooling: flatten
+  dropout: 0.05
+  squash_actions: true
+  freeze_vision: false
+  freeze_language: false

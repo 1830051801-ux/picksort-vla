@@ -1,5 +1,6 @@
 """CPU tests for the compact supervised policies and checkpoints."""
 
+from dataclasses import asdict
 from pathlib import Path
 
 import numpy as np
@@ -15,7 +16,13 @@ from smartpick_vla.models import (
     TemporalVLAConfig,
     TemporalVLAPolicy,
 )
-from smartpick_vla.training import load_checkpoint, save_checkpoint, supervised_train_step
+from smartpick_vla.training import (
+    load_checkpoint,
+    load_trained_policy,
+    multitask_train_step,
+    save_checkpoint,
+    supervised_train_step,
+)
 
 
 def test_byte_encoder_handles_utf8_and_empty_instruction() -> None:
@@ -260,3 +267,93 @@ def test_temporal_controller_preserves_observation_history() -> None:
     assert first.action.shape == (5,)
     assert second.action.shape == (5,)
     assert first.replanned and second.replanned
+
+
+def test_temporal_vla_flatten_pooling_preserves_spatial_grounding() -> None:
+    config = TemporalVLAConfig(
+        robot_state_dim=29,
+        action_dim=6,
+        action_horizon=2,
+        observation_horizon=3,
+        d_model=32,
+        nhead=4,
+        temporal_layers=1,
+        decoder_layers=1,
+        language_layers=1,
+        feedforward_dim=64,
+        language_max_length=12,
+        vision_grid_size=2,
+        vision_pooling="flatten",
+        dropout=0.0,
+    )
+    model = TemporalVLAPolicy(config)
+    assert isinstance(model.visual_projection, torch.nn.Linear)
+    actions = model(
+        torch.randint(0, 256, (2, 3, 3, 32, 32), dtype=torch.uint8),
+        ["pick the left object", "pick the right object"],
+        torch.randn(2, 3, 29),
+        torch.ones(2, 3, dtype=torch.bool),
+    )
+    assert actions.shape == (2, 2, 6)
+    assert torch.isfinite(actions).all()
+
+
+def test_temporal_vla_multitask_supervision_and_legacy_action_checkpoint(tmp_path: Path) -> None:
+    config = TemporalVLAConfig(
+        robot_state_dim=29,
+        action_dim=6,
+        action_horizon=2,
+        observation_horizon=3,
+        d_model=32,
+        nhead=4,
+        temporal_layers=1,
+        decoder_layers=1,
+        language_layers=1,
+        feedforward_dim=64,
+        language_max_length=12,
+        vision_grid_size=2,
+        dropout=0.0,
+    )
+    model = TemporalVLAPolicy(config)
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+    batch = {
+        "rgb": torch.randint(0, 256, (2, 3, 32, 32), dtype=torch.uint8),
+        "instruction": ["pick left", "pick right"],
+        "robot_state": torch.randn(2, 29),
+        "rgb_history": torch.randint(0, 256, (2, 3, 3, 32, 32), dtype=torch.uint8),
+        "robot_state_history": torch.randn(2, 3, 29),
+        "history_mask": torch.ones(2, 3, dtype=torch.bool),
+        "action": torch.empty(2, 2, 6).uniform_(-1.0, 1.0),
+        "action_mask": torch.ones(2, 2, dtype=torch.bool),
+        "goal_xy": torch.tensor([[0.25, 0.75], [0.70, 0.20]], dtype=torch.float32),
+        "goal_visible": torch.tensor([True, True]),
+        "stage_index": torch.tensor([0, 4], dtype=torch.long),
+    }
+    result = multitask_train_step(
+        model,
+        optimizer,
+        batch,
+        goal_loss_weight=0.5,
+        stage_loss_weight=0.25,
+    )
+    assert result.action_loss is not None
+    assert result.goal_loss > 0.0
+    assert result.stage_loss > 0.0
+
+    checkpoint = save_checkpoint(
+        tmp_path / "temporal.pt",
+        model,
+        config=config,
+        extra={"policy_kind": "temporal_vla", "model_config": asdict(config)},
+    )
+    payload = torch.load(checkpoint, map_location="cpu", weights_only=True)
+    payload["model_state"] = {
+        key: value
+        for key, value in payload["model_state"].items()
+        if not key.startswith(("goal_head.", "stage_head."))
+    }
+    legacy_path = tmp_path / "legacy_temporal.pt"
+    torch.save(payload, legacy_path)
+    restored, metadata = load_trained_policy(legacy_path)
+    assert isinstance(restored, TemporalVLAPolicy)
+    assert metadata["policy_kind"] == "temporal_vla"

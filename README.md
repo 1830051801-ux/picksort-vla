@@ -17,17 +17,23 @@ bridge.
 > The committed benchmark is simulation-only. No physical-robot success rate
 > is claimed.
 
-## Consolidated workcell
+The companion XiaoU project records a 2026-09-23 field workbook containing
+real-arm motion, desktop-item grasping, desk tidying, trash cleanup, and the
+preset task set. See the [field record index](docs/evidence/field_validation_20260923/README.md).
+PickSort's simulation and training measurements remain separate from that
+workbook.
 
-[成果图册 / Visual showcase](docs/SHOWCASE.md) · [Download consolidated source](https://github.com/1830051801-ux/picksort-vla/releases/tag/consolidation-20260920)
+## Simulation workcell
 
-`PickSort-VLA` is now the public **simulation and embodied-learning** line. The ROS 2 Jazzy / Gazebo vision-guided workcell is included intact under [`integrations/ros2-vision-guided-sorting-cell/`](integrations/ros2-vision-guided-sorting-cell/), including its independent documentation, MIT license, headless demo, evidence, Gazebo world and ROS 2 packages.
+[成果图册 / Visual showcase](docs/SHOWCASE.md) · [Download source package](https://github.com/1830051801-ux/picksort-vla/releases/tag/consolidation-20260920)
 
-![ROS 2 sorting-cell preview](integrations/ros2-vision-guided-sorting-cell/docs/assets/sorting_cell_demo.gif)
+`PickSort-VLA` is the public **simulation and embodied-learning** line. The ROS 2 Jazzy / Gazebo workcell is included under `integrations/`, with its headless demo, evidence, Gazebo world and ROS 2 packages.
+
+![ROS 2 sorting-cell preview](docs/assets/workcell-demo.gif)
 
 ![Two simulation paths](docs/assets/repository-map.svg)
 
-The repository map and source commits are recorded in [docs/CONSOLIDATION.md](docs/CONSOLIDATION.md). This import is a simulation integration; it does not turn the workcell evidence into a physical-robot result.
+The repository map records the data flow and execution boundary. Everything shown here is a simulation, replay or dry-run result; it does not claim a physical-robot result.
 
 The public project name and repository are now **PickSort-VLA**. For v0.x
 compatibility, the Python distribution remains `smartpick-vla`, the import is
@@ -140,6 +146,22 @@ Use `configs/data/perception_multiview_smoke.yaml`,
 six-axis mission showcase above uses the privileged expert, not a learned
 policy. The full data schema, safety behavior, recorded commands, and current
 limitations are in [Embodied simulation upgrade](docs/EMBODIED_SIMULATION_UPGRADE.md).
+
+## Auxiliary-supervision upgrade (2026-09-22)
+
+The Temporal VLA training path now accepts simulator-projected target pixels
+(`goal_xy`) and privileged waypoint phase labels (`stage_index`) as auxiliary
+tasks. The six-axis archive generated with
+`configs/train/data_mission_six_axis_upgrade.yaml` contains 24 randomized
+MuJoCo episodes, 21 successful expert episodes, and 7,780 transitions. A CUDA
+run with `configs/train/temporal_vla_mission_six_axis_aux.yaml` reached a best
+validation loss of 0.1163 after 1,140 optimizer steps.
+
+The fixed-seed five-suite replay is intentionally reported without smoothing:
+the privileged IK expert completed 17/20 episodes, while the newly trained
+auxiliary Temporal VLA completed 0/20 and timed out on 19/20. This is a valid
+training-and-replay result, not a deployment claim. The complete interpretation
+and command boundary are in [the 2026-09-22 offline verification record](docs/OFFLINE_VERIFICATION_20260922.md).
 
 ## Verified six-axis vision loop
 
@@ -540,8 +562,3 @@ The complete list is in [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md).
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) before opening a change. Safety or
 hardware-control issues should follow [`SECURITY.md`](SECURITY.md), not a public
 trial-and-error deployment.
-
-## License and citation
-
-MIT License. See [`LICENSE`](LICENSE) and [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
-Citation metadata is provided in [`CITATION.cff`](CITATION.cff).

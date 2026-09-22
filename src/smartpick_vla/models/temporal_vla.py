@@ -35,10 +35,18 @@ class TemporalVLAConfig:
     feedforward_dim: int = 256
     language_max_length: int = 64
     vision_grid_size: int = 4
+    # ``mean`` preserves the original checkpoint contract. ``flatten`` keeps
+    # the learned CoordConv grid's spatial layout before temporal fusion and
+    # is preferred for new grounding-focused training runs.
+    vision_pooling: str = "mean"
     dropout: float = 0.0
     squash_actions: bool = True
     freeze_vision: bool = False
     freeze_language: bool = False
+    # Auxiliary heads are trained only when the dataset carries synthetic
+    # target-pixel/stage labels.  Keeping them in the model config makes the
+    # checkpoint self-describing while preserving the original action API.
+    stage_classes: int = 9
 
     def __post_init__(self) -> None:
         positive = (
@@ -54,11 +62,14 @@ class TemporalVLAConfig:
             self.feedforward_dim,
             self.language_max_length,
             self.vision_grid_size,
+            self.stage_classes,
         )
         if any(value < 1 for value in positive):
             raise ValueError("TemporalVLAConfig dimensions and layer counts must be positive")
         if self.d_model % self.nhead != 0:
             raise ValueError("d_model must be divisible by nhead")
+        if self.vision_pooling not in {"mean", "flatten"}:
+            raise ValueError("vision_pooling must be 'mean' or 'flatten'")
         if not 0.0 <= self.dropout < 1.0:
             raise ValueError("dropout must be in [0, 1)")
 
@@ -86,6 +97,11 @@ class TemporalVLAPolicy(nn.Module):
         self.config = config
         self.vision_encoder = CompactVisionEncoder(
             config.d_model, grid_size=config.vision_grid_size
+        )
+        self.visual_projection = (
+            nn.Linear(config.d_model * config.vision_grid_size * config.vision_grid_size, config.d_model)
+            if config.vision_pooling == "flatten"
+            else nn.Identity()
         )
         self.language_encoder = ByteTextEncoder(
             config.d_model,
@@ -135,6 +151,14 @@ class TemporalVLAPolicy(nn.Module):
             nn.SiLU(),
             nn.Linear(config.d_model, config.action_dim),
         )
+        self.goal_head = nn.Sequential(
+            nn.LayerNorm(config.d_model),
+            nn.Linear(config.d_model, 2),
+        )
+        self.stage_head = nn.Sequential(
+            nn.LayerNorm(config.d_model),
+            nn.Linear(config.d_model, config.stage_classes),
+        )
         if config.freeze_vision:
             _freeze(self.vision_encoder)
         if config.freeze_language:
@@ -156,6 +180,29 @@ class TemporalVLAPolicy(nn.Module):
         history_mask: Tensor | None = None,
     ) -> Tensor:
         """Predict an action chunk from a fixed-length observation history."""
+
+        actions, _ = self.forward_with_aux(
+            rgb_history,
+            instruction,
+            robot_state_history,
+            history_mask,
+        )
+        return actions
+
+    def forward_with_aux(
+        self,
+        rgb_history: Tensor,
+        instruction: Sequence[str] | Tensor,
+        robot_state_history: Tensor,
+        history_mask: Tensor | None = None,
+    ) -> tuple[Tensor, dict[str, Tensor]]:
+        """Return actions plus optional spatial/phase predictions.
+
+        ``goal_xy`` is normalized image coordinates in ``[0, 1]`` and
+        ``stage_logits`` follows the eight waypoint stages plus ``done``.
+        The heads are deliberately auxiliary: callers that only need the
+        historical action contract can continue using :meth:`forward`.
+        """
 
         if rgb_history.ndim != 5:
             raise ValueError("rgb_history must have shape [B,T,C,H,W]")
@@ -191,7 +238,14 @@ class TemporalVLAPolicy(nn.Module):
 
         flattened_rgb = rgb_history.reshape(batch_size * history_steps, channels, height, width)
         visual_grid = self.vision_encoder(flattened_rgb)
-        visual_tokens = visual_grid.mean(dim=1).reshape(batch_size, history_steps, -1)
+        if self.config.vision_pooling == "flatten":
+            # Preserve row/column identity. The grid already carries learned
+            # spatial embeddings; flattening makes the location recoverable by
+            # the projection instead of cancelling it with a global mean.
+            visual_tokens = self.visual_projection(visual_grid.reshape(batch_size * history_steps, -1))
+            visual_tokens = visual_tokens.reshape(batch_size, history_steps, -1)
+        else:
+            visual_tokens = visual_grid.mean(dim=1).reshape(batch_size, history_steps, -1)
         state_tokens = self.state_encoder(
             robot_state_history.to(dtype=visual_tokens.dtype, device=visual_tokens.device)
         )
@@ -222,7 +276,14 @@ class TemporalVLAPolicy(nn.Module):
             memory_key_padding_mask=memory_padding,
         )
         action_chunk = self.action_head(decoded)
-        return torch.tanh(action_chunk) if self.config.squash_actions else action_chunk
+        actions = torch.tanh(action_chunk) if self.config.squash_actions else action_chunk
+        latest_index = history_steps - 1
+        latest_token = temporal_tokens[:, latest_index]
+        aux = {
+            "goal_xy": torch.sigmoid(self.goal_head(latest_token)),
+            "stage_logits": self.stage_head(latest_token),
+        }
+        return actions, aux
 
     def parameter_count(self, *, trainable_only: bool = False) -> int:
         return count_parameters(self, trainable_only=trainable_only)

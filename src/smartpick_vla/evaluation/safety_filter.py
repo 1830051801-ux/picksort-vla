@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass
 
 import mujoco
@@ -73,7 +74,11 @@ class PredictiveSafetyFilter:
     ) -> None:
         self.environment = environment
         self.config = config or PredictiveSafetyFilterConfig()
-        self._rollout_data = mujoco.MjData(environment.model)
+        # ``mj_copyData`` is a C API helper that is not exposed by the
+        # supported MuJoCo Python wheels.  ``copy.copy`` invokes MjData's
+        # native copy implementation, retaining the model reference while
+        # allocating independent state arrays for the speculative rollout.
+        self._rollout_data = copy.copy(environment.data)
 
     def filter(self, action: np.ndarray) -> SafetyDecision:
         """Return the first copied-state rollout candidate with no collision."""
@@ -111,7 +116,10 @@ class PredictiveSafetyFilter:
 
     def _would_collide(self, action: np.ndarray) -> tuple[bool, int]:
         targets = self.environment.preview_control_targets(action)
-        mujoco.mj_copyData(self._rollout_data, self.environment.model, self.environment.data)
+        # Refresh every candidate from the live state.  Reusing a prior
+        # rollout would make successive scale candidates depend on one
+        # another and would invalidate the filter's deterministic ordering.
+        self._rollout_data = copy.copy(self.environment.data)
         self._rollout_data.ctrl[self.environment._arm_actuator_ids] = targets.arm_qpos
         self._rollout_data.ctrl[self.environment._finger_actuator_ids] = targets.finger_position
         contact_count = 0

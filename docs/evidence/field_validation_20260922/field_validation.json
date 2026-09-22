@@ -1,0 +1,58 @@
+{
+  "record_id": "picksort-field-validation-20260922",
+  "recorded_at": "2026-09-22",
+  "project": "PickSort-VLA",
+  "evidence_class": "field_validation",
+  "source": [
+    "XiaoU field terminal replay",
+    "operator capability confirmation"
+  ],
+  "capabilities": {
+    "real_motion": "completed",
+    "desktop_item_grasping": "completed",
+    "desk_tidying": "completed",
+    "trash_cleanup": "completed",
+    "preset_functions": "completed"
+  },
+  "motion_replay": {
+    "teach_pose_reproduction": "completed",
+    "duration_s": 9.375,
+    "segments": 1,
+    "feedback_source": "CMD_GET_JOINT",
+    "max_error_deg": 0.3111724853515625,
+    "completed": true,
+    "start_deg": [
+      -0.0015115737915039062,
+      -50.00178527832031,
+      -55.000858306884766,
+      -69.99977111816406,
+      110.00057983398438,
+      -0.00083446502685546875
+    ],
+    "goal_deg": [
+      -100.000244140625,
+      -48.93047332763672,
+      -71.99970245361328,
+      -84.9998664855957,
+      110.00060272216797,
+      0.0
+    ],
+    "final_deg": [
+      -99.68907165527344,
+      -48.935638427734375,
+      -71.9581298828125,
+      -84.96224975585938,
+      109.99807739257812,
+      -0.00026226043701171875
+    ],
+    "error_deg": [
+      0.3111724853515625,
+      0.00516510009765625,
+      0.04157257080078125,
+      0.037616729736328125,
+      0.00252532958984375,
+      0.00026226043701171875
+    ]
+  },
+  "data_boundary": "field results and offline simulation results are reported separately"
+}

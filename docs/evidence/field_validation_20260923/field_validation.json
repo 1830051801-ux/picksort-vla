@@ -1,0 +1,389 @@
+{
+  "schema": "xiaou.field_workbook_metrics.v2",
+  "source": {
+    "filename": "XiaoU机械臂助手_功能演示数据 (2).xlsx",
+    "sha256": "c8fad3f4c1c4158cf05e6446d1ffbb77b1089465bcf63abd49987ad9aa4e318d",
+    "evidence_class": "user_supplied_workbook",
+    "recorded_at": "2026-09-23"
+  },
+  "worksheet_claims": {
+    "overview": {
+      "yolo_map50": 0.943,
+      "yolo_fps": 22.1,
+      "calibration_mean_mm": 1.2,
+      "uart_loss_rate": 0.0031,
+      "grasp_success_rate": 0.972,
+      "language_success_rate": 0.967,
+      "vla_mean_latency_ms": 4.63,
+      "simulation_success_rate": 0.978,
+      "teach_max_angle_error_deg": 0.31,
+      "automation_gate_count": 233
+    },
+    "continuous_run": {
+      "count": 1000,
+      "success_count": 972,
+      "failure_count": 28,
+      "success_rate": 0.972,
+      "mean_duration_s_derived": 41.2671,
+      "mean_error_mm_derived": 1.35265,
+      "failure_reasons_from_robustness_sheet": {
+        "夹爪滑落": 11,
+        "目标遮挡": 10,
+        "目标位移": 7
+      }
+    },
+    "grasp_demo": {
+      "aggregate_runs_claimed": "105/108（3 轮×36）",
+      "aggregate_successes_claimed": 105,
+      "aggregate_success_rate_claimed": 0.9722222222222222,
+      "task_rows": [
+        [
+          "任务",
+          "轮次",
+          "步骤数",
+          "涉及对象",
+          "执行时长(s)",
+          "完成度",
+          "遗留项",
+          "备注"
+        ],
+        [
+          "桌面整理",
+          "R1",
+          12,
+          "笔×2 手机 耳机 充电器 纸盒 橡皮",
+          42,
+          1,
+          "无",
+          "按类别归位"
+        ],
+        [
+          "桌面整理",
+          "R2",
+          10,
+          "可乐瓶 易拉罐 水杯 纸巾",
+          36,
+          1,
+          "无",
+          "按区域归位"
+        ],
+        [
+          "桌面整理",
+          "R3",
+          12,
+          "混合 18 件乱序",
+          48,
+          1,
+          "无",
+          "全流程串联"
+        ],
+        [
+          "垃圾清理",
+          "R1",
+          6,
+          "垃圾团×3 空瓶 废纸",
+          28,
+          1,
+          "无",
+          "投入垃圾桶"
+        ],
+        [
+          "垃圾清理",
+          "R2",
+          8,
+          "纸巾团×4 空罐×2 碎纸",
+          33,
+          0.95,
+          "线缆缠绕件 1 项",
+          "分类清理"
+        ],
+        [
+          "混合任务",
+          "R3",
+          15,
+          "整理+清理混合 18 件",
+          58,
+          1,
+          "无",
+          "多轮重复"
+        ]
+      ]
+    },
+    "vla": {
+      "detailed_table_rows": 20,
+      "detailed_success_count_derived": 19,
+      "detailed_success_rate_derived": 0.95,
+      "detailed_mean_latency_ms_derived": 4.535,
+      "detailed_p95_latency_ms_derived": 5.0,
+      "overview_summary": {
+        "instruction_count": "30 条中英指令，29 成功（1 条低光误判）",
+        "success_count": 29,
+        "mean_latency_ms": 4.63,
+        "p95_latency_ms": "5.52"
+      },
+      "note": "逐条表与总览/问题跟踪采用不同样本口径，均保留，不合并。"
+    },
+    "yolo": {
+      "class_count": 12,
+      "mean_ap50_derived_from_class_rows": 0.941667,
+      "overview_map50": 0.943,
+      "class_rows": [
+        [
+          "类别",
+          "英文标签",
+          "样本数",
+          "AP@0.5",
+          "平均置信度",
+          "备注"
+        ],
+        [
+          "笔",
+          "pen",
+          240,
+          0.938,
+          0.902,
+          "侧放/斜放均稳定"
+        ],
+        [
+          "可乐瓶",
+          "cola",
+          220,
+          0.957,
+          0.928,
+          "高光瓶身偶发漏检"
+        ],
+        [
+          "水杯",
+          "cup",
+          210,
+          0.941,
+          0.906,
+          "透明杯体难例"
+        ],
+        [
+          "纸巾",
+          "tissue",
+          230,
+          0.949,
+          0.917,
+          "皱褶目标"
+        ],
+        [
+          "耳机",
+          "earphone",
+          180,
+          0.921,
+          0.884,
+          "小目标难例"
+        ],
+        [
+          "手机",
+          "phone",
+          200,
+          0.963,
+          0.935,
+          "反光面"
+        ],
+        [
+          "易拉罐",
+          "can",
+          190,
+          0.952,
+          0.921,
+          "罐装饮料"
+        ],
+        [
+          "纸盒",
+          "box",
+          160,
+          0.971,
+          0.947,
+          "矩形目标"
+        ],
+        [
+          "充电器",
+          "charger",
+          150,
+          0.915,
+          0.871,
+          "线缆缠绕难例"
+        ],
+        [
+          "螺丝刀",
+          "screwdriver",
+          140,
+          0.909,
+          0.866,
+          "细长目标"
+        ],
+        [
+          "垃圾团",
+          "trash",
+          260,
+          0.958,
+          0.931,
+          "清理场景专用类"
+        ],
+        [
+          "橡皮",
+          "eraser",
+          170,
+          0.926,
+          0.892,
+          "小目标"
+        ]
+      ]
+    },
+    "calibration": {
+      "point_count": 27,
+      "mean_reprojection_error_mm_derived": 1.26963,
+      "max_reprojection_error_mm_derived": 1.62,
+      "within_1_5mm_count_derived": 23
+    },
+    "training": {
+      "dagger_episodes": 168,
+      "dagger_transitions": 54798,
+      "best_validation_loss_from_three_seed_rows": 0.1159,
+      "seed_losses": [
+        0.1163,
+        0.1178,
+        0.1159
+      ],
+      "training_hardware_recorded_in_workbook": "RTX 4070"
+    },
+    "ablation": {
+      "remove_dagger_delta_pp": -12.0,
+      "remove_world_model_delta_pp": -6.3,
+      "source_rows": [
+        [
+          "配置",
+          "仿真成功率",
+          "真机成功率",
+          "风险精度",
+          "备注"
+        ],
+        [
+          "完整系统（v2.0）",
+          0.947,
+          0.972,
+          0.92,
+          "发布版"
+        ],
+        [
+          "移除世界模型",
+          0.9,
+          0.917,
+          "—",
+          "碰撞预演缺失，高风险场景失败 +6"
+        ],
+        [
+          "移除 DAgger",
+          0.863,
+          0.852,
+          "—",
+          "分布偏移回归 8.4pp"
+        ],
+        [
+          "移除辅助监督",
+          0.897,
+          0.907,
+          "—",
+          "长指令理解下降 9.3pp"
+        ],
+        [
+          "移除课程学习",
+          0.88,
+          0.889,
+          "—",
+          "复杂多步任务不稳定"
+        ],
+        [
+          "输入 64→128",
+          0.953,
+          0.977,
+          0.926,
+          "延迟 +1.8ms 增益有限，未采纳"
+        ],
+        [
+          "轻量 backbone（0.9M）",
+          0.907,
+          0.917,
+          0.88,
+          "边缘友好但精度降约 4pp"
+        ]
+      ]
+    },
+    "edge_profile": {
+      "pi_platform": "平台：Raspberry Pi 5（8GB / 4 核 / 主动散热）· 感知与决策全部端侧推理 · 无云端依赖",
+      "full_loop_cpu_mean": 0.71,
+      "full_loop_memory_mb": 1240,
+      "temperature_start_c": 38.2,
+      "temperature_end_c": 52.3,
+      "stable_hours": 8,
+      "mean_cycle_s_claimed": "40.8s（108 次均值）"
+    },
+    "world_model": {
+      "risk_precision_derived": 0.92,
+      "risk_recall_derived": 0.92,
+      "preview_count": 100
+    },
+    "automation_gates": {
+      "total_claimed": 233,
+      "source_rows": [
+        [
+          "套件",
+          "用例数",
+          "子测试",
+          "通过",
+          "结果"
+        ],
+        [
+          "PickSort-VLA（单元+合约）",
+          80,
+          0,
+          80,
+          "PASS"
+        ],
+        [
+          "XiaoU 视觉机械臂（单元+集成）",
+          135,
+          9,
+          135,
+          "PASS"
+        ],
+        [
+          "发布结构检查",
+          6,
+          0,
+          6,
+          "PASS"
+        ],
+        [
+          "回归套件（碰撞/标定/协议）",
+          12,
+          0,
+          12,
+          "PASS"
+        ]
+      ]
+    }
+  },
+  "conflicts_to_preserve": [
+    {
+      "metric": "VLA sample size and latency",
+      "detailed_table": "VLA推理 rows 12-31: 20 instructions, 19/20, derived mean 4.535 ms",
+      "summary_tables": "总览 rows 16-18 and 问题跟踪: 30 instructions, 29/30, 4.63 ms, P95 5.52 ms"
+    },
+    {
+      "metric": "training GPU",
+      "workbook_record": "数据与训练 rows 13-19: RTX 4070",
+      "requested_hardware_baseline": "user request: RTX 4090 24GB",
+      "resolution": "document as target baseline versus recorded run; do not relabel the recorded run"
+    },
+    {
+      "metric": "continuous-run mean cycle",
+      "workbook_records": "性能画像 row 42: 40.8 s; raw 1000-row derived mean is retained separately"
+    }
+  ],
+  "derivation_policy": "Only arithmetic over rows in this workbook is derived. No simulation or hardware run is executed by the importer."
+}

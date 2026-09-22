@@ -1,0 +1,28 @@
+# Offline recovery-label collection for the trained six-axis Temporal VLA.
+# The learner visits states in MuJoCo; a privileged IK teacher records the
+# corrective action only for offline imitation.  No physical transport is used.
+collection:
+  episodes: 72
+  seed: 20260922
+  image_size: 64
+  max_episode_steps: 380
+  grasp_assist: true
+  six_axis: true
+  mission_length: 3
+  expert_action_probability: 0.45
+  instruction_splits: [train, paraphrase, ood]
+  ood_layout_probability: 0.35
+
+policy_replan_interval: 1
+
+domain_randomization:
+  enabled: true
+  object_mass_scale: [0.65, 1.45]
+  friction_scale: [0.55, 1.60]
+  camera_position_std_m: 0.010
+  camera_fovy_delta_deg: 3.0
+  light_intensity_scale: [0.70, 1.30]
+  object_color_jitter: 0.10
+  robot_state_noise_std: 0.003
+  detection_noise_std_m: 0.004
+  control_delay_steps: [0, 2]

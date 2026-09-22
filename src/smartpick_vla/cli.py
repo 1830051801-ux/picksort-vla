@@ -17,6 +17,7 @@ import numpy as np
 import torch
 
 from smartpick_vla import __version__
+from smartpick_vla.data.dagger import DaggerCollectionConfig, collect_dagger_dataset
 from smartpick_vla.data.expert import IKWaypointExpert
 from smartpick_vla.data.generate import GenerationConfig, generate_expert_dataset
 from smartpick_vla.data.perception import (
@@ -26,6 +27,7 @@ from smartpick_vla.data.perception import (
 from smartpick_vla.envs import SmartPickEnv
 from smartpick_vla.envs.randomization import DomainRandomizationConfig
 from smartpick_vla.evaluation.benchmark import BenchmarkConfig, run_benchmark
+from smartpick_vla.evaluation.controller import TemporalPolicyController
 from smartpick_vla.evaluation.plots import plot_grouped_evaluation, plot_learning_curves
 from smartpick_vla.evaluation.residual_controller import ResidualPolicyController
 from smartpick_vla.evaluation.safety_filter import PredictiveSafetyFilterConfig
@@ -114,6 +116,39 @@ def _command_generate(args: argparse.Namespace) -> int:
             "attempted_episodes": manifest["attempted_episodes"],
             "successful_episodes": manifest["successful_episodes"],
             "transitions": manifest["statistics"]["transitions"],
+        }
+    )
+    return 0
+
+
+def _command_collect_dagger(args: argparse.Namespace) -> int:
+    """Collect offline recovery labels from learner-visited MuJoCo states."""
+
+    payload = load_config(args.config)
+    collection = DaggerCollectionConfig(**payload.get("collection", {}))
+    randomization = DomainRandomizationConfig.from_dict(payload.get("domain_randomization"))
+    model, metadata = load_trained_policy(args.checkpoint, device=args.device)
+    if metadata.get("policy_kind") != "temporal_vla":
+        raise ValueError("collect-dagger currently requires a temporal_vla checkpoint")
+    controller = TemporalPolicyController(
+        model,
+        device=args.device,
+        replan_interval=int(payload.get("policy_replan_interval", 1)),
+    )
+    manifest = collect_dagger_dataset(
+        args.output,
+        controller=controller,
+        config=collection,
+        domain_config=randomization,
+    )
+    _json_print(
+        {
+            "dataset": str(Path(args.output)),
+            "attempted_episodes": manifest["attempted_episodes"],
+            "successful_behavior_episodes": manifest["successful_behavior_episodes"],
+            "transitions": manifest["statistics"]["transitions"],
+            "offline": True,
+            "physical_robot_data": False,
         }
     )
     return 0
@@ -527,6 +562,16 @@ def build_parser() -> argparse.ArgumentParser:
     generate.add_argument("--config", required=True)
     generate.add_argument("--output", required=True)
     generate.set_defaults(handler=_command_generate)
+
+    dagger = subparsers.add_parser(
+        "collect-dagger",
+        help="collect privileged recovery labels on learner-visited MuJoCo states",
+    )
+    dagger.add_argument("--config", required=True)
+    dagger.add_argument("--checkpoint", required=True)
+    dagger.add_argument("--output", required=True)
+    dagger.add_argument("--device", default="cpu")
+    dagger.set_defaults(handler=_command_collect_dagger)
 
     perception = subparsers.add_parser(
         "generate-perception",

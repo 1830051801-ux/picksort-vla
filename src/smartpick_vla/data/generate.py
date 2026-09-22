@@ -62,6 +62,9 @@ def generate_expert_dataset(
         "instruction": [],
         "task_class": [],
         "episode_success": [],
+        "goal_xy": [],
+        "goal_visible": [],
+        "stage_index": [],
     }
     episode_buffers: list[dict[str, list[Any]]] = []
     episode_summaries: list[dict[str, Any]] = []
@@ -75,7 +78,8 @@ def generate_expert_dataset(
             episode_return = 0.0
             info: dict[str, Any] = {}
             for step_index in range(config.max_episode_steps):
-                action, _ = expert.act()
+                action, diagnostics = expert.act()
+                goal_xy, goal_visible = expert.target_pixel_xy()
                 buffer["rgb"].append(observation["rgb"])
                 buffer["robot_state"].append(observation["robot_state"])
                 buffer["action"].append(action)
@@ -84,6 +88,9 @@ def generate_expert_dataset(
                 buffer["instruction"].append(observation["instruction"])
                 buffer["task_class"].append(env.task.target_class)
                 buffer["episode_success"].append(False)  # filled after terminal state
+                buffer["goal_xy"].append(goal_xy)
+                buffer["goal_visible"].append(goal_visible)
+                buffer["stage_index"].append(diagnostics.stage_index)
                 observation, reward, terminated, truncated, info = env.step(action)
                 episode_return += reward
                 if terminated or truncated:
@@ -121,6 +128,9 @@ def generate_expert_dataset(
         "instruction": np.asarray(records["instruction"], dtype=np.str_),
         "task_class": np.asarray(records["task_class"], dtype=np.str_),
         "episode_success": np.asarray(records["episode_success"], dtype=np.bool_),
+        "goal_xy": np.asarray(records["goal_xy"], dtype=np.float32),
+        "goal_visible": np.asarray(records["goal_visible"], dtype=np.bool_),
+        "stage_index": np.asarray(records["stage_index"], dtype=np.int64),
     }
     statistics = validate_trajectory_arrays(arrays)
     destination = save_trajectory_npz(output_path, arrays)

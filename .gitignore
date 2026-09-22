@@ -20,5 +20,9 @@ checkpoints/*.pt
 checkpoints/*.pth
 checkpoints/**/last.pt
 !checkpoints/smoke/residual/last.pt
+checkpoints/upgrade_*/
+datasets/generated/upgrade_*/
+results/upgrade_*/
+runtime/
 results/runs/
 *.mp4

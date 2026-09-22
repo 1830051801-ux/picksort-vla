@@ -66,9 +66,10 @@ rate. A long-training configuration is a budget definition until the run
 artifacts exist.
 
 The initial real-system scope is real-log validation/replay, calibration,
-software bounds, and ROS 2 dry-run. Unless separately collected hardware logs
-exist and pass the experiment protocol, release notes must say that real-robot
-task success is unverified.
+software bounds, and ROS 2 dry-run. Later field results should be recorded in a
+dedicated field-validation entry with their execution source and kept separate
+from simulation benchmarks. A field result must not be promoted to a success
+rate or a broader reliability claim without corresponding hardware records.
 
 ## 3. Run the local verification stack
 

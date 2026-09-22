@@ -1,6 +1,6 @@
 # PickSort-VLA 成果图册
 
-[项目入口](../README.md) · [仓库归并说明](CONSOLIDATION.md) · [成果下载](https://github.com/1830051801-ux/picksort-vla/releases/tag/consolidation-20260920)
+[项目入口](../README.md) · [成果下载](https://github.com/1830051801-ux/picksort-vla/releases/tag/consolidation-20260920)
 
 ## 六轴语言条件分拣
 
@@ -12,11 +12,11 @@
 
 ![本轮工作单元运动学演示](evidence/consolidation_20260920/sorting_cell_demo.gif)
 
-本轮在归并后的目录重新运行纯 Python 运动学演示：3 个物体分别进入合格、拒收和返工路线，完成 3/3；总仿真时间 37.60 s，平均单件 12.27 s。本轮没有启动 Gazebo 或 ROS 2 进程。
+本轮重新运行纯 Python 运动学演示：3 个物体分别进入合格、拒收和返工路线，完成 3/3；总仿真时间 37.60 s，平均单件 12.27 s。本轮没有启动 Gazebo 或 ROS 2 进程。
 
 ![本轮轨迹、高度和周期统计](evidence/consolidation_20260920/headless_dashboard.png)
 
-数据：[运行摘要](evidence/consolidation_20260920/run_summary.json)、[逐件结果](evidence/consolidation_20260920/cycles.csv)、[轨迹采样](evidence/consolidation_20260920/sampled_frames.json)。已有的 ROS 2/Gazebo 运行记录仍在 [导入工程的历史证据目录](../integrations/ros2-vision-guided-sorting-cell/docs/evidence/README.md)。
+数据：[运行摘要](evidence/consolidation_20260920/run_summary.json)、[逐件结果](evidence/consolidation_20260920/cycles.csv)、[轨迹采样](evidence/consolidation_20260920/sampled_frames.json)。ROS 2/Gazebo 的历史回放记录随源码包一并提供。
 
 ## 本轮验证
 
@@ -28,4 +28,8 @@
 | Ruff 检查与格式 | 通过 |
 | 新的运动学演示 | 3/3 路由通过，PNG/GIF/JSON/CSV 已归档 |
 
-配套机械 CAD、Pi/F407、六轴数字孪生和策略量化资产归入 [小U主仓库](https://github.com/1830051801-ux/xiaou-vision-robot-arm)。两个项目通过文档和接口互相引用，保留各自清晰的运行入口。
+## XiaoU field record (2026-09-23)
+
+小U工作簿记录了真实运动、桌面物品抓取、桌面整理和垃圾清理。PickSort-VLA 只引用这份现场记录，不把它的数字改写为仿真策略结果。详见[现场数据索引](evidence/field_validation_20260923/README.md)。
+
+配套机械 CAD、Pi/F407、六轴数字孪生和策略量化资产见 [小U主仓库](https://github.com/1830051801-ux/xiaou-vision-robot-arm)。

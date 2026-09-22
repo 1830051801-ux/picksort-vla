@@ -10,5 +10,5 @@
   <rect class="box" x="580" y="135" width="185" height="105" rx="10"/><text class="t h" x="611" y="174">MuJoCo 评估</text><text class="t s" x="611" y="203">任务、碰撞、指标</text><text class="t n" x="611" y="225">可重复种子</text>
   <rect class="green" x="845" y="135" width="260" height="105" rx="10"/><text class="t h" x="873" y="174">ROS 2 / Gazebo 工作单元</text><text class="t s" x="873" y="203">感知、规划、控制器、验证</text><text class="t n" x="873" y="225">独立导入 · MIT 保留</text>
   <path class="a" d="M235 188H315"/><path class="a" d="M500 188H580"/><path class="a" d="M765 188H845"/>
-  <text class="t n" x="45" y="325">来源：picksort-vla 主线 + ros2-vision-guided-sorting-cell@a7c53de；结构与证据详见 docs/CONSOLIDATION.md。</text>
+  <text class="t n" x="45" y="325">数据流：合成数据 → 策略 → MuJoCo → ROS 2 / Gazebo；全部结果均为离线演示或回放。</text>
 </svg>
