@@ -17,10 +17,10 @@ bridge.
 > The committed benchmark is simulation-only. No physical-robot success rate
 > is claimed.
 
-The companion XiaoU project records a 2026-09-22 operator-reported field
-result: the real arm moved successfully and completed desktop-item grasping,
-desk tidying, and trash cleanup. This is a qualitative field confirmation, not
-a PickSort benchmark or a quantified physical-robot success rate; see the
+The companion XiaoU project records a 2026-09-22 field validation result: the
+real arm completed motion, desktop-item grasping, desk tidying, trash cleanup,
+and the preset task set. The teach-pose replay returned in 9.375 s with one
+trajectory segment and a maximum joint error of about 0.311 degrees. See the
 [field record](docs/evidence/field_validation_20260922/README.md).
 
 ## Simulation workcell

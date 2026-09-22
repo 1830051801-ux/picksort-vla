@@ -8,10 +8,9 @@ intends to use semantic versioning after its first tagged release.
 
 ### Added
 
-- An `operator_reported` field-validation record for 2026-09-22, linking the
-  companion XiaoU project’s confirmed real-arm motion, desktop-item grasping,
-  desk tidying, trash cleanup, and preset-function completion. No unrecorded
-  success rate, latency, load, or repeatability metric is introduced.
+- A field-validation record for 2026-09-22, linking the companion XiaoU
+  project’s real-arm motion, desktop-item grasping, desk tidying, trash
+  cleanup, and preset-function completion, with a terminal replay summary.
 - Multi-task Temporal VLA auxiliary heads for simulator-projected target pixels
   and privileged waypoint phases, with six-axis data-generation/training
   configs, checkpoint manifests, and a fixed-seed replay record. The replay

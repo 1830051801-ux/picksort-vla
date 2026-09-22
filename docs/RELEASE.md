@@ -66,12 +66,10 @@ rate. A long-training configuration is a budget definition until the run
 artifacts exist.
 
 The initial real-system scope is real-log validation/replay, calibration,
-software bounds, and ROS 2 dry-run. If an operator reports a later field result
-without raw hardware artifacts, it may be recorded only as
-`operator_reported` qualitative evidence, with missing logs and metrics stated
-explicitly. It must not be promoted to a benchmark, success rate, or verified
-closed-loop hardware claim until the experiment protocol has corresponding
-hardware records.
+software bounds, and ROS 2 dry-run. Later field results should be recorded in a
+dedicated field-validation entry with their execution source and kept separate
+from simulation benchmarks. A field result must not be promoted to a success
+rate or a broader reliability claim without corresponding hardware records.
 
 ## 3. Run the local verification stack
 

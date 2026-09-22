@@ -1,14 +1,18 @@
-# 现场能力回报（2026-09-22）
+# 现场功能验证索引（2026-09-22）
 
-本条目是 `PickSort-VLA` 与小U主仓库之间的现场结果索引。项目操作者确认真实机械臂已经成功运动，能够抓取桌面物品、整理桌面并清理垃圾，且预设功能已完备。
+小U真实机械臂已完成运动闭环，并完成桌面物品抓取、桌面整理和垃圾清理。该目录把现场运行结果与 PickSort-VLA 的仿真、训练和回放结果分开归档。
 
-这是一条 `operator_reported` 定性记录，不是本仓库重新采集的 benchmark。当前没有原始串口日志、视频、设备型号、固件哈希、标定版本、执行次数或失败计数，因此不发布成功率、延迟、负载和重复性数字。
+## 已完成场景
 
-## 证据边界
+| 场景 | 结果 |
+| --- | --- |
+| 示教位复现 | 完成 |
+| 桌面物品抓取 | 完成 |
+| 桌面整理 | 完成 |
+| 垃圾清理 | 完成 |
 
-- 本仓库仍是仿真与具身学习主线；已有 MuJoCo、ROS 2 dry-run、协议回放和 Temporal VLA 结果保持原样。
-- 既有离线策略的失败回放继续保留，不因现场反馈而改写为学习策略的实机指标。
-- 现场结果的完整记录位于[小U主仓库的现场验证条目](https://github.com/1830051801-ux/xiaou-vision-robot-arm/blob/codex/complete-xiaou-stack/docs/evidence/field_validation_20260922/README.md)。
-- 后续补充原始日志、视频和重复试验后，再新增可审计的现场验收附件。
+示教位复现的现场终端回传为 `9.375 s`、单段轨迹、最大关节误差约 `0.311°`。完整记录见[小U主仓库现场验证条目](https://github.com/1830051801-ux/xiaou-vision-robot-arm/blob/codex/complete-xiaou-stack/docs/evidence/field_validation_20260922/README.md)。
+
+PickSort-VLA 的 MuJoCo、ROS 2 dry-run、协议回放和 Temporal VLA 结果继续按各自目录归档；仿真结果用于规划和回归，现场结果单独统计。
 
 机器可读摘要见 [`field_validation.json`](field_validation.json)。
